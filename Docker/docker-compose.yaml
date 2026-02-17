@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:latest
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: setgame
+      POSTGRES_PASSWORD: Test@1234!
+      POSTGRES_DB: setgame
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - Internet_toepassingen
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: set@example.com
+      PGADMIN_DEFAULT_PASSWORD: Test@1234!
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+      - Internet_toepassingen
+
+volumes:
+  postgres_data:
+
+
+networks:
+  Internet_toepassingen:
