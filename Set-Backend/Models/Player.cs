@@ -9,6 +9,5 @@ public class Player
     public int Score { get; set; }
     
     public List<Game> Games { get; set; }
- 
-   // public required int GameId { get; set; }
+    
 }

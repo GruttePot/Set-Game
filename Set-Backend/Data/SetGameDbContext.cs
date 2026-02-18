@@ -9,4 +9,11 @@ public class SetGameDbContext : DbContext
 
     public DbSet<Card> Cards { get; set; }
     public DbSet<Deck> Decks { get; set; }
+    public DbSet<Player> Players { get; set; }
+    public DbSet<Game> Games { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        
+    }
 }

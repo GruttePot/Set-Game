@@ -9,11 +9,11 @@ public class Card
 {
     public required int Id { get; set; }
     
-    public string Colour { get; set; }
+    public CardColour Colour { get; set; }
     
-    public string Shape { get; set; }
+    public CardShape Shape { get; set; }
     
-    public string Filling { get; set; }
+    public CardFilling Filling { get; set; }
     
     public string Number { get; set; }
     
