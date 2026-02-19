@@ -1,12 +1,11 @@
 ﻿using Set_Backend.Models;
+namespace Set_Backend.Services;
 
-namespace Set_Backend.Repositories;
-
-public interface ICardRepository
+public interface ICardService
 {
     Task<IEnumerable<Card>> GetCardsAsync();
     Task<Card?> GetCardByIdAsync(int id);
-    Task <Card>CreateCardAsync(Card card);
-    Task <Card>UpdateCardAsync(Card card);
+    Task<Card> CreateCardAsync(Card card);
+    Task<Card> UpdateCardAsync(Card card);
     Task DeleteCardAsync(Card card);
 }
