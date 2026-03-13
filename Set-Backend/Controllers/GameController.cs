@@ -41,9 +41,27 @@ public class GameController : ControllerBase
         return CreatedAtAction(nameof(GetGame), new { id = create_game.Id }, create_game);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteGame(Game game)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Game>> UpdateGame(int id, Game game)
     {
+        if (id != game.Id)
+        {
+            return BadRequest();
+        }
+        
+        var updated_game = await _gameService.UpdateGameAsync(game);
+        return Ok(updated_game);
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteGame(int id)
+    {
+        var game = await _gameService.GetGameByIdAsync(id);
+        if (game == null)
+        {
+            return NotFound();
+        }
+        
         await _gameService.DeleteGameAsync(game);
         return NoContent();
     }

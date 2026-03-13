@@ -1,6 +1,6 @@
 ﻿namespace Set_Backend.DTO;
 
-public class LoginRequest
+public class LoginCredentials
 {
     public required string Name { get; set; }
     

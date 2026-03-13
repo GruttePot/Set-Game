@@ -1,5 +1,6 @@
 ﻿using Set_Backend.Data;
 using Set_Backend.Models;
+using Microsoft.EntityFrameworkCore;
 namespace Set_Backend.Repositories;
 
 public class PlayerRepository : IPlayerRepository
@@ -18,7 +19,7 @@ public class PlayerRepository : IPlayerRepository
 
     public async Task<Player?> GetPlayerByNameAsync(string name)
     {
-        return _context.Players.FirstOrDefault(p => p.Name == name);
+        return await _context.Players.FirstOrDefaultAsync(p => p.Name == name);
     }
     
     public async Task<Player> CreatePlayerAsync(Player player)

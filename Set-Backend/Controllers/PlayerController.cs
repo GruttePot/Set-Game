@@ -18,9 +18,9 @@ public class PlayerController : ControllerBase
     }
 
      [HttpPost("login")]
-     public async Task<IActionResult> Login([FromBody] LoginRequest request)
+     public async Task<IActionResult> Login([FromBody] LoginCredentials credentials)
      {
-         var player = await _playerService.ValidatePlayer(request.Name, request.PasswordHash);
+         var player = await _playerService.ValidatePlayer(credentials.Name, credentials.PasswordHash);
      
          if (player != null)
          {
