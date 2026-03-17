@@ -2,7 +2,9 @@
 using System.Security.Claims;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper;
 using Set_Backend.Models;
+using Set_Backend.DTO;
 using Set_Backend.Repositories;
 
 namespace Set_Backend.Services;
@@ -11,14 +13,16 @@ public class PlayerService : IPlayerService
 {
     private readonly IPlayerRepository _playerRepository;
     private readonly IConfiguration _configuration;
+    private readonly IMapper _mapper;
     
-    public PlayerService(IPlayerRepository playerRepository, IConfiguration configuration)
+    public PlayerService(IPlayerRepository playerRepository, IConfiguration configuration, IMapper mapper )
     {
         _playerRepository = playerRepository;
         _configuration = configuration;
+        _mapper = mapper;
     }
 
-    public async Task<Player?> ValidatePlayer(string name, string passwordHash)
+    public async Task<PlayerDTO?> ValidatePlayer(string name, string passwordHash)
     {
         var player = await _playerRepository.GetPlayerByNameAsync(name);
         
@@ -26,15 +30,15 @@ public class PlayerService : IPlayerService
         {
             return null;
         }
-        return player;
+        return _mapper.Map<PlayerDTO>(player);
     }
 
-    public string GenerateJwtToken(Player player)
+    public string GenerateJwtToken(PlayerDTO playerDto)
     {
         var claims = new[]
         {
-            new Claim(JwtRegisteredClaimNames.Sub, player.Id.ToString()),
-            new Claim(ClaimTypes.Name, player.Name),
+            new Claim(JwtRegisteredClaimNames.Sub, playerDto.Id.ToString()),
+            new Claim(ClaimTypes.Name, playerDto.Name),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
         };
         

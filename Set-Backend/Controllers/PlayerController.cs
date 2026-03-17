@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Set_Backend.Models;
 using Set_Backend.DTO;
 using Set_Backend.Services;
 
@@ -20,12 +19,12 @@ public class PlayerController : ControllerBase
      [HttpPost("login")]
      public async Task<IActionResult> Login([FromBody] LoginCredentials credentials)
      {
-         var player = await _playerService.ValidatePlayer(credentials.Name, credentials.PasswordHash);
+         var playerDto = await _playerService.ValidatePlayer(credentials.Name, credentials.PasswordHash);
      
-         if (player != null)
+         if (playerDto != null)
          {
-             var token = _playerService.GenerateJwtToken(player);
-             return Ok(new { Token = token, PlayerId = player.Id, PlayerName = player.Name });
+             var token = _playerService.GenerateJwtToken(playerDto);
+             return Ok(new { Token = token, PlayerId = playerDto.Id, PlayerName = playerDto.Name });
          }
      
         return Unauthorized();
