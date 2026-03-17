@@ -1,22 +1,31 @@
 ﻿namespace Set_Backend.Models;
 
+public enum GameStatus
+{
+    Active,
+    Finished,
+    Paused
+}
+
 public class Game
 {
     public required int Id { get; set; }
-    
-    public required int DeckId { get; set; }
-    
-    public string? Hint { get; set; }
-    
-    public required string Status { get; set; }
-    
-    public DateTime Created { get; set; }
-    
-    public DateTime Ended { get; set; }
 
-    public Deck Deck { get; set; } = null!;
-
-    public List<Player> Players { get; set; } = new List<Player>();
+    public required int PlayerId { get; set; }
+    
+    public int Hints { get; set; }
+    
+    public int Fails { get; set; }
+    
+    public required GameStatus Status { get; set; }
+    
+    public List<FoundSet> FoundSets { get; set; } = new List<FoundSet>();
+    
+    public DateTime CreatedAt { get; set; }
+    
+    public DateTime? FinishedAt { get; set; }
+    
+    public Player Player { get; set; } = null!;
 
     public List<Card> TableCards { get; set; } = new List<Card>();
 }
