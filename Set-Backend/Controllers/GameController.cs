@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-using Set_Backend.Models;
-using Set_Backend.DTO
+using Set_Backend.DTO;
 using Set_Backend.Services;
 
 namespace Set_Backend.Controllers;
@@ -86,26 +85,26 @@ public class GameController : ControllerBase
         return NoContent();
     }
     
-    // [HttpPost("{id}/check-set")]
-    // [Authorize]
-    // public async Task<ActionResult<object>> CheckSet(int id, [FromBody] List<int> cardIds)
-    // {
-    //     var PlayerId = ParsePlayerId();
-    //     if (PlayerId == null)
-    //     {
-    //         return BadRequest();
-    //     }
-    //     
-    //     var checkSet = await _gameService.ValidateSetAsync(List<Card> cards);
-    //     
-    //     if (checkSet == null)
-    //     {
-    //         return BadRequest();
-    //     }
-    //
-    //     return checkSet;
-    // }
-    //
+    [HttpPost("{id}/check-set")]
+    [Authorize]
+    public async Task<ActionResult<object>> CheckSet(int id, [FromBody] List<int> cardIds)
+    {
+        var PlayerId = ParsePlayerId();
+        if (PlayerId == null)
+        {
+            return BadRequest();
+        }
+        
+        var checkSet = await _gameService.ValidateSetAsync(id , cardIds);
+        
+        if (checkSet == null)
+        {
+            return BadRequest();
+        }
+    
+        return checkSet;
+    }
+    
     // [HttpGet("{id}/available-sets")]
     // [Authorize]
     // public async Task<ActionResult<int>> GetAvailableSets(int id)

@@ -13,12 +13,12 @@ public interface IGameService
     Task<Deck> ShuffleDeckAsync(Deck deck);
     Task<Card> DealCardAsync(Deck deck);
     
-    Task<bool> ValidateSetAsync(List<Card> cards);
+    Task<bool> ValidateSetAsync(int id, List<int> cardIds);
     Task<int> FindAvailableSetsAsync(Deck deck);
     Task<List<CardDTO>> GetHintAsync(Deck deck);
     Task<Card> DrawCardIfNotSetAsync(Deck deck, List<Card> cards);
     
-    bool IsValidSet(Card card1, Card card2, Card card3);
+    bool IsValidSet(CardDTO card1, CardDTO card2, CardDTO card3);
 
     List<Card[]> FindAllSets(List<Card> tableCards);
 

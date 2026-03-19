@@ -85,17 +85,29 @@ public class GameService : IGameService
         return await Task.FromResult(card);
     }
     
-    public async Task<bool> ValidateSetAsync(List<Card> cards)
+    public async Task<bool> ValidateSetAsync(int id, List<int> cards)
     {
+        var game = await _gameRepository.GetGameByIdAsync(id);
+        if (game == null)
+        {
+            return false;
+        }
+        
+        var selectedCards = game.Deck.Cards.Where(c => cards.Contains(c.Id)).ToList();
+        
         if (cards.Count != 3)
         {
             return await Task.FromResult(false);
         }
         
-        return await Task.FromResult(IsValidSet(cards[0], cards[1], cards[2]));
+        var card1DTO = _mapper.Map<CardDTO>(selectedCards[0]);
+        var card2DTO = _mapper.Map<CardDTO>(selectedCards[1]);
+        var card3DTO = _mapper.Map<CardDTO>(selectedCards[2]);
+        
+        return await Task.FromResult(IsValidSet(card1DTO, card2DTO, card3DTO));
     }
 
-    public bool IsValidSet(Card card1, Card card2, Card card3)
+    public bool IsValidSet(CardDTO card1, CardDTO card2, CardDTO card3)
     {
         return IsAttributeValid(card1.Colour, card2.Colour, card3.Colour) &&
                IsAttributeValid(card1.Shape, card2.Shape, card3.Shape) &&
@@ -156,7 +168,11 @@ public class GameService : IGameService
             {
                 for (int k = j + 1; k < cardCount; k++)
                 {
-                    if (IsValidSet(tableCards[i], tableCards[j], tableCards[k]))
+                    var card1DTO = _mapper.Map<CardDTO>(tableCards[i]);
+                    var card2DTO = _mapper.Map<CardDTO>(tableCards[j]);
+                    var card3DTO = _mapper.Map<CardDTO>(tableCards[k]);
+                    
+                    if (IsValidSet(card1DTO, card2DTO, card3DTO))
                     {
                         validSets.Add(new[] { tableCards[i], tableCards[j], tableCards[k] });
                     }
