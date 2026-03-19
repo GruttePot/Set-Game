@@ -111,16 +111,11 @@ public class GameService : IGameService
         return distinctCount == 1 || distinctCount == 3;
     }
 
-    public Task<List<Card>> FindAvailableSetsAsync(Deck deck)
+    public Task<int> FindAvailableSetsAsync(Deck deck)
     {
         var sets = FindAllSets(deck.Cards);
         
-        if (sets.Count > 0)
-        {
-            return Task.FromResult(sets.SelectMany(set => set).ToList());
-        }
-        
-        return Task.FromResult(new List<Card>());
+        return Task.FromResult(sets.Count);
     }
     
     public async Task<List<CardDTO>> GetHintAsync(Deck deck)
@@ -130,7 +125,7 @@ public class GameService : IGameService
         if (sets.Count > 0)
         {
             var randomSet = sets[_random.Next(sets.Count)];
-            var cardDTOs = randomSet.Select(card => _mapper.Map<CardDTO>(card)).ToList();
+            var cardDTOs = randomSet.Take(2).Select(card => _mapper.Map<CardDTO>(card)).ToList();
             
             return await Task.FromResult(cardDTOs);
         }
@@ -140,7 +135,9 @@ public class GameService : IGameService
 
     public async Task<Card> DrawCardIfNotSetAsync(Deck deck, List<Card> cards)
     {
-        if (!IsValidSet(cards[0], cards[1], cards[2]))
+        var sets = FindAllSets(cards);
+
+        if (sets.Count == 0)
         {
             return await DealCardAsync(deck);
         }
@@ -184,6 +181,7 @@ public class GameService : IGameService
                     {
                         cards.Add(new Card
                         {
+                            Id = id++,
                             Colour = colour,
                             Shape = shape,
                             Filling = filling,

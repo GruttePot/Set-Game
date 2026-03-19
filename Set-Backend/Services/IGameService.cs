@@ -14,7 +14,7 @@ public interface IGameService
     Task<Card> DealCardAsync(Deck deck);
     
     Task<bool> ValidateSetAsync(List<Card> cards);
-    Task<List<Card>> FindAvailableSetsAsync(Deck deck);
+    Task<int> FindAvailableSetsAsync(Deck deck);
     Task<List<CardDTO>> GetHintAsync(Deck deck);
     Task<Card> DrawCardIfNotSetAsync(Deck deck, List<Card> cards);
     
