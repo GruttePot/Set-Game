@@ -15,7 +15,7 @@ public interface IGameService
     
     Task<bool> ValidateSetAsync(int id, List<int> cardIds);
     Task<int> FindAvailableSetsAsync(int id);
-    Task<List<CardDTO>> GetHintAsync(Deck deck);
+    Task<List<CardDTO>> GetHintAsync(int id);
     Task<Card> DrawCardIfNotSetAsync(Deck deck, List<Card> cards);
     
     bool IsValidSet(CardDTO card1, CardDTO card2, CardDTO card3);

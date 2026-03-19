@@ -135,9 +135,15 @@ public class GameService : IGameService
         return await Task.FromResult(sets.Count);
     }
     
-    public async Task<List<CardDTO>> GetHintAsync(Deck deck)
+    public async Task<List<CardDTO>> GetHintAsync(int id)
     {
-        var sets = FindAllSets(deck.Cards);
+       var game = await _gameRepository.GetGameByIdAsync(id);
+       if (game == null)
+       {
+           return new List<CardDTO>();
+       }
+       
+        var sets = FindAllSets(game.Deck.Cards);
         
         if (sets.Count > 0)
         {

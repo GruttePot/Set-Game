@@ -124,27 +124,27 @@ public class GameController : ControllerBase
         return availableSets;
     }
     
-    //
-    // [HttpPost("{id}/hint")]
-    // [Authorize]
-    // public async Task<ActionResult<List<Card>>> GetHint(int id)
-    // {
-    //     var playerId = ParsePlayerId();
-    //     if (playerId == null)
-    //     {
-    //         return BadRequest();
-    //     }
-    //     
-    //     var hint = await _gameService.GetHintAsync(deck);
-    //
-    //     if (hint == null)
-    //     {
-    //         return BadRequest();
-    //     }
-    //
-    //     return hint;
-    // }
-    //
+    
+    [HttpPost("{id}/hint")]
+   
+    public async Task<ActionResult<List<CardDTO>>> GetHint(int id)
+    {
+        var playerId = ParsePlayerId();
+        if (playerId == null)
+        {
+            return BadRequest();
+        }
+        
+        var hint = await _gameService.GetHintAsync(id);
+    
+        if (hint == null)
+        {
+            return BadRequest();
+        }
+    
+        return hint;
+    }
+    
     // [HttpPost("{id}/draw-card")]
     // [Authorize]
     // public async Task<ActionResult<Card>> DrawCard(int id)
