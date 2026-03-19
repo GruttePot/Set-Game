@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using Set_Backend.Models;
+using Set_Backend.DTO
 using Set_Backend.Services;
 
 namespace Set_Backend.Controllers;
@@ -25,7 +26,7 @@ public class GameController : ControllerBase
 
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<IEnumerable<Game>>> GetAllGames()
+    public async Task<ActionResult<IEnumerable<GameDTO>>> GetAllGames()
     {
         var playerId = ParsePlayerId();
         if (playerId == null)
@@ -39,7 +40,7 @@ public class GameController : ControllerBase
 
     [HttpGet("{id}")]
     [Authorize]
-    public async Task<ActionResult<Game>> GetGame(int id)
+    public async Task<ActionResult<GameDTO>> GetGame(int id)
     {
         var playerId = ParsePlayerId();
         if (playerId == null)
@@ -57,7 +58,7 @@ public class GameController : ControllerBase
 
     [HttpPost("new")]
     [Authorize]
-    public async Task<ActionResult<Game>> CreateGame(Game game)
+    public async Task<ActionResult<GameDTO>> CreateGame()
     {
         var playerId = ParsePlayerId();
         if (playerId == null)
@@ -65,21 +66,9 @@ public class GameController : ControllerBase
             return BadRequest();
         }
         
-        var create_game = await _gameService.CreateGameAsync(game);
+        var create_game = await _gameService.CreateGameAsync(playerId);
         
         return CreatedAtAction(nameof(GetGame), new { id = create_game.Id }, create_game);
-    }
-
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Game>> UpdateGame(int id, Game game)
-    {
-        if (id != game.Id)
-        {
-            return BadRequest();
-        }
-        
-        var updated_game = await _gameService.UpdateGameAsync(game);
-        return Ok(updated_game);
     }
     
     [HttpDelete("{id}")]
@@ -92,13 +81,8 @@ public class GameController : ControllerBase
             return BadRequest();
         }
         
-        var game = await _gameService.GetGameByIdAsync(id);
-        if (game == null)
-        {
-            return NotFound();
-        }
+        await _gameService.DeleteGameAsync(id);
         
-        await _gameService.DeleteGameAsync(game);
         return NoContent();
     }
     
