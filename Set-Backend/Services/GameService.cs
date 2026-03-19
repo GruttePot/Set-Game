@@ -123,11 +123,16 @@ public class GameService : IGameService
         return distinctCount == 1 || distinctCount == 3;
     }
 
-    public Task<int> FindAvailableSetsAsync(Deck deck)
+    public async Task<int> FindAvailableSetsAsync(int id)
     {
-        var sets = FindAllSets(deck.Cards);
+        var game = await _gameRepository.GetGameByIdAsync(id);
+        if (game == null)
+        {
+            return 0;
+        }
+        var sets = FindAllSets(game.Deck.Cards);
         
-        return Task.FromResult(sets.Count);
+        return await Task.FromResult(sets.Count);
     }
     
     public async Task<List<CardDTO>> GetHintAsync(Deck deck)

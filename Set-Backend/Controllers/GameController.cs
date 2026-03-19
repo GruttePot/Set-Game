@@ -105,31 +105,25 @@ public class GameController : ControllerBase
         return checkSet;
     }
     
-    // [HttpGet("{id}/available-sets")]
-    // [Authorize]
-    // public async Task<ActionResult<int>> GetAvailableSets(int id)
-    // {
-    //     var playerId = ParsePlayerId();
-    //     if (playerId == null)
-    //     {
-    //         return BadRequest();
-    //     }
-    //
-    //     var game = await _gameService.GetGameByIdAsync(id);
-    //     if (game == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     
-    //     var availableSets = await _gameService.FindAvailableSetsAsync(game.Deck);
-    //
-    //     if (availableSets == null)
-    //     {
-    //         return BadRequest();
-    //     }
-    //     return availableSets.Count;
-    // }
-    //
+    [HttpGet("{id}/available-sets")]
+    public async Task<ActionResult<int>> GetAvailableSets(int id)
+    {
+        var playerId = ParsePlayerId();
+        if (playerId == null)
+        {
+            return BadRequest();
+        }
+        
+        var availableSets = await _gameService.FindAvailableSetsAsync(id);
+    
+        if (availableSets == null)
+        {
+            return NotFound();
+        }
+
+        return availableSets;
+    }
+    
     //
     // [HttpPost("{id}/hint")]
     // [Authorize]
