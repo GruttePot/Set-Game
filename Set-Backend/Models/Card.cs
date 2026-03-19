@@ -7,7 +7,7 @@ public enum CardNumber { One = 1, Two = 2, Three = 3 }
 
 public class Card
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
     
     public CardColour Colour { get; set; }
     

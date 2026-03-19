@@ -9,7 +9,7 @@ public enum GameStatus
 
 public class Game
 {
-    public required int Id { get; set; }
+    public int Id { get; set; }
 
     public required int PlayerId { get; set; }
     
@@ -27,5 +27,5 @@ public class Game
     
     public Player Player { get; set; } = null!;
 
-    public List<Card> TableCards { get; set; } = new List<Card>();
+    public Deck Deck { get; set; } = null!;
 }

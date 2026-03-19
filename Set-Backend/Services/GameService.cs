@@ -1,41 +1,70 @@
-﻿using Set_Backend.Repositories;
+﻿using Set_Backend.DTO;
+using Set_Backend.Repositories;
 using Set_Backend.Models;
+using AutoMapper;
 
 namespace Set_Backend.Services;
 
 public class GameService : IGameService
 {
     private readonly IGameRepository _gameRepository;
+    private readonly IMapper _mapper;
     private readonly Random _random = new Random();
     
-    public GameService(IGameRepository gameRepository)
+    public GameService(IGameRepository gameRepository, IMapper mapper)
     {
         _gameRepository = gameRepository;
+        _mapper = mapper;
     }
     
-    public async Task<IEnumerable<Game>> GetGamesAsync()
+    public async Task<IEnumerable<GameDTO>> GetGamesAsync()
     {
-        return await _gameRepository.GetGamesAsync();
+        var games = await _gameRepository.GetGamesAsync();
+        
+        return _mapper.Map<IEnumerable<GameDTO>>(games);
+    }
+
+    public async Task<GameDTO?> GetGameByIdAsync(int id)
+    {
+        var game = await _gameRepository.GetGameByIdAsync(id);
+        return _mapper.Map<GameDTO>(game);
+
+    }
+
+    public async Task<GameDTO> CreateGameAsync(int id)
+    {
+        var gameCards = GenerateGameCards();
+        
+        var deck = new Deck { Cards = gameCards };
+
+        var shuffleDeck = await ShuffleDeckAsync(deck);
+        shuffleDeck.Cards = shuffleDeck.Cards.Take(12).ToList();
+
+        var game = new Game
+        {
+            PlayerId = id,
+            CreatedAt = DateTime.UtcNow,
+            Status = GameStatus.Active,
+            Deck = shuffleDeck,
+            Hints = 0,
+            Fails = 0,
+            FoundSets = new List<FoundSet>()
+        };
+            
+         var createdGame =  await _gameRepository.CreateGameAsync(game);
+         return _mapper.Map<GameDTO>(createdGame);
     }
     
-    public async Task<Game?> GetGameByIdAsync(int id)
+    public async Task<bool> DeleteGameAsync(int id)
     {
-        return await _gameRepository.GetGameByIdAsync(id);
-    }
-    
-    public async Task<Game> CreateGameAsync(Game game)
-    {
-        return await _gameRepository.CreateGameAsync(game);
-    }
-    
-    public async Task<Game> UpdateGameAsync(Game game)
-    {
-        return await _gameRepository.UpdateGameAsync(game);
-    }
-    
-    public async Task DeleteGameAsync(Game game)
-    {
+        var game = await _gameRepository.GetGameByIdAsync(id);
+        
+        if (game == null)
+        {
+            return false;
+        }
         await _gameRepository.DeleteGameAsync(game);
+        return true;
     }
 
     public async Task<Deck> ShuffleDeckAsync(Deck deck)
@@ -94,16 +123,19 @@ public class GameService : IGameService
         return Task.FromResult(new List<Card>());
     }
     
-    public async Task<List<Card>> GetHintAsync(Deck deck)
+    public async Task<List<CardDTO>> GetHintAsync(Deck deck)
     {
         var sets = FindAllSets(deck.Cards);
         
         if (sets.Count > 0)
         {
-            return await Task.FromResult(sets[_random.Next(sets.Count)].ToList());
+            var randomSet = sets[_random.Next(sets.Count)];
+            var cardDTOs = randomSet.Select(card => _mapper.Map<CardDTO>(card)).ToList();
+            
+            return await Task.FromResult(cardDTOs);
         }
         
-        return await Task.FromResult(new List<Card>());
+        return await Task.FromResult(new List<CardDTO>());
     }
 
     public async Task<Card> DrawCardIfNotSetAsync(Deck deck, List<Card> cards)
@@ -135,5 +167,33 @@ public class GameService : IGameService
             }
         }
         return validSets;
+    }
+
+    public List<Card> GenerateGameCards()
+    {
+        var cards = new List<Card>();
+        var id = 1;
+        
+        foreach (var colour in Enum.GetValues<CardColour>())
+        {
+            foreach (var shape in Enum.GetValues<CardShape>())
+            {
+                foreach (var filling in Enum.GetValues<CardFilling>())
+                {
+                    foreach (var number in Enum.GetValues<CardNumber>())
+                    {
+                        cards.Add(new Card
+                        {
+                            Colour = colour,
+                            Shape = shape,
+                            Filling = filling,
+                            Number = number
+                        });
+                    }
+                }
+            }
+        }
+    
+        return cards;
     }
 }

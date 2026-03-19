@@ -9,5 +9,8 @@ public class Mapper : Profile
     {
         CreateMap<Game, GameDTO>().ReverseMap();
         CreateMap<Player, PlayerDTO>().ReverseMap();
+        CreateMap<Deck, DeckDTO>().ReverseMap();
+        CreateMap<Card, CardDTO>().ReverseMap();
+        CreateMap<FoundSet, FoundSetDTO>().ReverseMap();
     }      
 }

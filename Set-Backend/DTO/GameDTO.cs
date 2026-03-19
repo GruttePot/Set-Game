@@ -8,8 +8,6 @@ public class GameDTO
     
     public int PlayerId { get; set; }
     
-    public int DeckId { get; set; }
-    
     public int Hints { get; set; }
     
     public int Fails  { get; set; }
@@ -24,8 +22,6 @@ public class GameDTO
     
     public PlayerDTO Player { get; set; }
     
-    public List<CardDTO> TableCards { get; set; }
-    
-    public List<FoundSet> FoundSets { get; set; }
+    public List<FoundSetDTO> FoundSets { get; set; }
     
 }
