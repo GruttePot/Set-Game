@@ -19,7 +19,7 @@ public class PlayerRepository : IPlayerRepository
 
     public async Task<Player?> GetPlayerByNameAsync(string name)
     {
-        return await _context.Players.FirstOrDefaultAsync(p => p.UserName == name);
+        return await _context.Players.FirstOrDefaultAsync(p => p.Name == name);
     }
     
     public async Task<Player> CreatePlayerAsync(Player player)

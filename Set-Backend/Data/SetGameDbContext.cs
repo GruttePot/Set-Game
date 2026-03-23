@@ -13,7 +13,7 @@ public class SetGameDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Player>()
-            .Property(p => p.UserName)
+            .Property(p => p.Name)
             .IsRequired()
             .HasMaxLength(100);
         
