@@ -11,6 +11,7 @@ namespace Set_Backend.Controllers;
 public class GameController : ControllerBase
 {
     private readonly IGameService _gameService;
+    private readonly ISetService _setService;
 
     private int ParsePlayerId()
     {
@@ -18,9 +19,10 @@ public class GameController : ControllerBase
         return int.TryParse(playerId, out var playerIdInt) ? playerIdInt : 1;
     }
     
-    public GameController(IGameService gameService)
+    public GameController(IGameService gameService, ISetService setService)
     {
         _gameService = gameService;
+        _setService = setService;
     }
 
     [HttpGet]
@@ -95,7 +97,7 @@ public class GameController : ControllerBase
             return BadRequest();
         }
         
-        var checkSet = await _gameService.ValidateSetAsync(id , cardIds);
+        var checkSet = await _setService.ValidateSetAsync(id , cardIds);
         
         if (checkSet == null)
         {
@@ -114,7 +116,7 @@ public class GameController : ControllerBase
             return BadRequest();
         }
         
-        var availableSets = await _gameService.FindAvailableSetsAsync(id);
+        var availableSets = await _setService.FindAvailableSetsAsync(id);
     
         if (availableSets == null)
         {
@@ -126,7 +128,6 @@ public class GameController : ControllerBase
     
     
     [HttpPost("{id}/hint")]
-   
     public async Task<ActionResult<List<CardDTO>>> GetHint(int id)
     {
         var playerId = ParsePlayerId();
@@ -135,7 +136,7 @@ public class GameController : ControllerBase
             return BadRequest();
         }
         
-        var hint = await _gameService.GetHintAsync(id);
+        var hint = await _setService.GetHintAsync(id);
     
         if (hint == null)
         {
@@ -144,11 +145,4 @@ public class GameController : ControllerBase
     
         return hint;
     }
-    
-    // [HttpPost("{id}/draw-card")]
-    // [Authorize]
-    // public async Task<ActionResult<Card>> DrawCard(int id)
-    // {
-    //     
-    // }
 }

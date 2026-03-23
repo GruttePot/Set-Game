@@ -20,9 +20,10 @@ builder.Services.AddDbContext<SetGameDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("PostgresConnectionString")));
 
 builder.Services.AddScoped<IGameRepository, GameRepository>();
-builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 builder.Services.AddScoped<IGameService, GameService>();
+builder.Services.AddScoped<IDeckService, DeckService>();
+builder.Services.AddScoped<ISetService, SetService>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
 
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
