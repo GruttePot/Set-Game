@@ -17,8 +17,7 @@ namespace Set_Backend.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 },
                 constraints: table =>
                 {
@@ -41,18 +40,40 @@ namespace Set_Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Card",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Colour = table.Column<int>(type: "integer", nullable: false),
+                    Shape = table.Column<int>(type: "integer", nullable: false),
+                    Filling = table.Column<int>(type: "integer", nullable: false),
+                    Number = table.Column<int>(type: "integer", nullable: false),
+                    DeckId = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Card", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Card_Deck_DeckId",
+                        column: x => x.DeckId,
+                        principalTable: "Deck",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Games",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PlayerId = table.Column<int>(type: "integer", nullable: false),
-                    DeckId = table.Column<int>(type: "integer", nullable: false),
                     Hints = table.Column<int>(type: "integer", nullable: false),
                     Fails = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    FinishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                    FinishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    DeckId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -69,34 +90,6 @@ namespace Set_Backend.Migrations
                         principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Card",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Colour = table.Column<int>(type: "integer", nullable: false),
-                    Shape = table.Column<int>(type: "integer", nullable: false),
-                    Filling = table.Column<int>(type: "integer", nullable: false),
-                    Number = table.Column<int>(type: "integer", nullable: false),
-                    DeckId = table.Column<int>(type: "integer", nullable: true),
-                    GameId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Card", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Card_Deck_DeckId",
-                        column: x => x.DeckId,
-                        principalTable: "Deck",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Card_Games_GameId",
-                        column: x => x.GameId,
-                        principalTable: "Games",
-                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -144,11 +137,6 @@ namespace Set_Backend.Migrations
                 name: "IX_Card_DeckId",
                 table: "Card",
                 column: "DeckId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Card_GameId",
-                table: "Card",
-                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_FoundSet_Card1Id",

@@ -12,7 +12,7 @@ using Set_Backend.Data;
 namespace Set_Backend.Migrations
 {
     [DbContext(typeof(SetGameDbContext))]
-    [Migration("20260317124741_Players")]
+    [Migration("20260323095946_Players")]
     partial class Players
     {
         /// <inheritdoc />
@@ -42,9 +42,6 @@ namespace Set_Backend.Migrations
                     b.Property<int>("Filling")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("GameId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Number")
                         .HasColumnType("integer");
 
@@ -54,8 +51,6 @@ namespace Set_Backend.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DeckId");
-
-                    b.HasIndex("GameId");
 
                     b.ToTable("Card");
                 });
@@ -67,10 +62,6 @@ namespace Set_Backend.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -181,10 +172,6 @@ namespace Set_Backend.Migrations
                     b.HasOne("Set_Backend.Models.Deck", null)
                         .WithMany("Cards")
                         .HasForeignKey("DeckId");
-
-                    b.HasOne("Set_Backend.Models.Game", null)
-                        .WithMany("TableCards")
-                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("Set_Backend.Models.FoundSet", b =>
@@ -249,8 +236,6 @@ namespace Set_Backend.Migrations
             modelBuilder.Entity("Set_Backend.Models.Game", b =>
                 {
                     b.Navigation("FoundSets");
-
-                    b.Navigation("TableCards");
                 });
 
             modelBuilder.Entity("Set_Backend.Models.Player", b =>
