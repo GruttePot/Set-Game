@@ -99,7 +99,7 @@ public class GameController : ControllerBase
         
         var checkSet = await _setService.ValidateSetAsync(id , cardIds);
         
-        if (checkSet == null)
+        if (!checkSet)
         {
             return BadRequest();
         }

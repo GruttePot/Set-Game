@@ -21,7 +21,7 @@ public class GameDTO
     public DeckDTO Deck { get; set; }
     
     public PlayerDTO Player { get; set; }
-    
-    public List<FoundSetDTO> FoundSets { get; set; }
-    
+
+    public List<FoundSetDTO> FoundSets { get; set; } = new();
+
 }
