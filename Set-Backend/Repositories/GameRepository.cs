@@ -13,7 +13,7 @@ public class GameRepository : IGameRepository
         _context = context;
     }
     
-    public async Task<IEnumerable<Game>> GetGamesAsync()
+    public async Task<IEnumerable<Game>> GetAllGamesAsync()
     {
         return await _context.Games.ToListAsync();
     }

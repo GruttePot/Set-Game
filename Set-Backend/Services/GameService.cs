@@ -18,9 +18,9 @@ public class GameService : IGameService
         _deckService = deckService;
     }
     
-    public async Task<IEnumerable<GameDTO>> GetGamesAsync()
+    public async Task<IEnumerable<GameDTO>> GetAllGamesAsync()
     {
-        var games = await _gameRepository.GetGamesAsync();
+        var games = await _gameRepository.GetAllGamesAsync();
         
         return _mapper.Map<IEnumerable<GameDTO>>(games);
     }

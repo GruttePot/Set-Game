@@ -5,7 +5,7 @@ namespace Set_Backend.Services;
 
 public interface IGameService
 {
-    Task<IEnumerable<GameDTO>> GetGamesAsync();
+    Task<IEnumerable<GameDTO>> GetAllGamesAsync();
     Task<GameDTO?> GetGameByIdAsync(int id);
     Task<GameDTO> CreateGameAsync(int id);
     Task<bool> DeleteGameAsync(int id);
