@@ -11,7 +11,5 @@ public class FoundSet
     public int Card3Id  { get; set; }
     
     public Game Game { get; set; } = null!;
-    public Card Card1 { get; set; } = null!;
-    public Card Card2 { get; set; } = null!;
-    public Card Card3 { get; set; } = null!;
+
 }

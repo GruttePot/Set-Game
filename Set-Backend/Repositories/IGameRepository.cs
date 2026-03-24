@@ -9,4 +9,5 @@ public interface IGameRepository
     Task<Game> CreateGameAsync(Game game);
     Task<Game> UpdateGameAsync(Game game);
     Task DeleteGameAsync(Game game);
+    Task<FoundSet> SaveFoundSetAsync(FoundSet foundSet);
 }

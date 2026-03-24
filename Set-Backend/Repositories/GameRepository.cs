@@ -42,4 +42,11 @@ public class GameRepository : IGameRepository
         _context.Games.Remove(game);
         await _context.SaveChangesAsync();
     }
+
+    public async Task<FoundSet> SaveFoundSetAsync(FoundSet foundSet)
+    {
+        _context.FoundSets.Add(foundSet);
+        await _context.SaveChangesAsync();
+        return foundSet;
+    }
 }
