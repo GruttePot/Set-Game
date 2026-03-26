@@ -20,8 +20,13 @@ public class GameRepository : IGameRepository
     
     public async Task<Game?> GetGameByIdAsync(int id)
     {
-        return await _context.Games.FindAsync(id);
+        return await _context.Games
+            .Include(g => g.FoundSets)     
+            .Include(g => g.Deck)        
+            .ThenInclude(d => d.Cards) 
+            .FirstOrDefaultAsync(g => g.Id == id);
     }
+
 
     public async Task<Game> CreateGameAsync(Game game)
     {
