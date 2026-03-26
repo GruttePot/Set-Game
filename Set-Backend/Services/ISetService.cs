@@ -10,4 +10,5 @@ public interface ISetService
     Task<bool> ValidateSetAsync(int id, List<int> cardIds);
     Task<int> FindAvailableSetsAsync(int id);
     Task<List<CardDTO>> GetHintAsync(int id);
+    Task SaveFoundSetAsync(int id, List<int> cardIds);
 }

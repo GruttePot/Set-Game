@@ -4,7 +4,6 @@ namespace Set_Backend.Services;
 
 public class DeckService : IDeckService
 {
-       
        private readonly ISetService _setService;
        private readonly Random _random = new Random();
        

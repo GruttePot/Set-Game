@@ -21,6 +21,8 @@ public class Game
     
     public List<FoundSet> FoundSets { get; set; } = new List<FoundSet>();
     
+    public List<Card> TableCards { get; set; } =  new List<Card>();
+    
     public DateTime CreatedAt { get; set; }
     
     public DateTime? FinishedAt { get; set; }

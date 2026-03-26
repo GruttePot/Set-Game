@@ -66,7 +66,7 @@ public class SetService : ISetService
             return false;
         }
         
-        var selectedCards = game.Deck.Cards.Where(c => cards.Contains(c.Id)).ToList();
+        var selectedCards = game.TableCards.Where(c => cards.Contains(c.Id)).ToList();
         
         if (cards.Count != 3)
         {
@@ -87,7 +87,7 @@ public class SetService : ISetService
         {
             return 0;
         }
-        var sets = FindAllSets(game.Deck.Cards);
+        var sets = FindAllSets(game.TableCards);
         
         return await Task.FromResult(sets.Count);
     }
@@ -100,7 +100,7 @@ public class SetService : ISetService
             return new List<CardDTO>();
         }
        
-        var sets = FindAllSets(game.Deck.Cards);
+        var sets = FindAllSets(game.TableCards);
         
         if (sets.Count > 0)
         {
@@ -112,4 +112,25 @@ public class SetService : ISetService
         
         return await Task.FromResult(new List<CardDTO>());
     }
+
+    public async Task SaveFoundSetAsync(int id, List<int> cardIds)
+    {
+        var validSet = await ValidateSetAsync(id, cardIds);
+        if (!validSet)
+        {
+            throw new InvalidOperationException("Invalid set");
+        }
+
+        var foundSet = new FoundSet
+        {
+            GameId = id,
+            Card1Id = cardIds[0],
+            Card2Id = cardIds[1],
+            Card3Id = cardIds[2],
+            FoundAt = DateTime.UtcNow
+        };
+        
+        await _gameRepository.SaveFoundSetAsync(foundSet);
+    }
+    
 }

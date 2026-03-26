@@ -12,6 +12,7 @@ public class GameController : ControllerBase
 {
     private readonly IGameService _gameService;
     private readonly ISetService _setService;
+    private readonly IDeckService _deckService;
 
     private int ParsePlayerId()
     {
@@ -19,10 +20,11 @@ public class GameController : ControllerBase
         return int.TryParse(playerId, out var playerIdInt) ? playerIdInt : 1;
     }
     
-    public GameController(IGameService gameService, ISetService setService)
+    public GameController(IGameService gameService, ISetService setService, IDeckService deckService)
     {
         _gameService = gameService;
         _setService = setService;
+        _deckService = deckService;
     }
 
     [HttpGet]
@@ -88,23 +90,23 @@ public class GameController : ControllerBase
     }
     
     [HttpPost("{id}/check-set")]
-    [Authorize]
-    public async Task<ActionResult<object>> CheckSet(int id, [FromBody] List<int> cardIds)
+    public async Task<ActionResult<GameDTO>> CheckSet(int id, [FromBody] List<int> cardIds)
     {
         var PlayerId = ParsePlayerId();
         if (PlayerId == null)
         {
             return BadRequest();
         }
-        
-        var checkSet = await _setService.ValidateSetAsync(id , cardIds);
-        
-        if (!checkSet)
+
+        try
         {
-            return BadRequest();
+            var checkSet = await _gameService.ProcessFoundSetAsync(id, cardIds);
+            return Ok(checkSet);
         }
-    
-        return checkSet;
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
     
     [HttpGet("{id}/available-sets")]

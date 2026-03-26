@@ -9,13 +9,15 @@ public class GameService : IGameService
 {
     private readonly IGameRepository _gameRepository;
     private readonly IDeckService _deckService;
+    private readonly ISetService _setService;
     private readonly IMapper _mapper;
     
-    public GameService(IGameRepository gameRepository, IMapper mapper, IDeckService deckService)
+    public GameService(IGameRepository gameRepository, IMapper mapper, IDeckService deckService, ISetService setService)
     {
         _gameRepository = gameRepository;
         _mapper = mapper;
         _deckService = deckService;
+        _setService = setService;
     }
     
     public async Task<IEnumerable<GameDTO>> GetAllGamesAsync()
@@ -39,7 +41,6 @@ public class GameService : IGameService
         var deck = new Deck { Cards = gameCards };
 
         var shuffleDeck = await _deckService.ShuffleDeckAsync(deck);
-        shuffleDeck.Cards = shuffleDeck.Cards.Take(12).ToList();
 
         var game = new Game
         {
@@ -49,7 +50,8 @@ public class GameService : IGameService
             Deck = shuffleDeck,
             Hints = 0,
             Fails = 0,
-            FoundSets = new List<FoundSet>()
+            FoundSets = new List<FoundSet>(),
+            TableCards = shuffleDeck.Cards.TakeLast(12).ToList()
         };
             
          var createdGame =  await _gameRepository.CreateGameAsync(game);
@@ -95,5 +97,47 @@ public class GameService : IGameService
         }
     
         return cards;
+    }
+
+    public async Task<GameDTO> ProcessFoundSetAsync(int id, List<int> cardIds)
+    {
+        var valid = await _setService.ValidateSetAsync(id, cardIds);
+        if (!valid)
+            throw new InvalidOperationException("Set invalid");
+
+        await _setService.SaveFoundSetAsync(id, cardIds);
+        
+        var game = await _gameRepository.GetGameByIdAsync(id);
+        if (game == null)
+            throw new InvalidOperationException("Game not available");
+        
+        var removeCards = game.TableCards
+            .Where(c => cardIds.Contains(c.Id))
+            .ToList();
+
+        foreach (var card in removeCards)
+        {
+            game.TableCards.Remove(card);
+        }
+
+        while (game.TableCards.Count < 12 && game.Deck.Cards.Count > 0)
+        {
+            var setsAvailable = _setService.FindAllSets(game.TableCards);
+
+            if (setsAvailable.Count > 0)
+                break;
+
+            try
+            {
+                var newCard = await _deckService.DrawCardIfNotSetAsync(game.Deck, game.TableCards);
+                game.TableCards.Add(newCard);
+            }
+            catch (InvalidOperationException)
+            {
+                break;
+            }
+        }
+        await _gameRepository.UpdateGameAsync(game);
+        return _mapper.Map<GameDTO>(game);
     }
 }
