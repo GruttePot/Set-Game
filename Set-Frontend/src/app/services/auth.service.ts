@@ -30,7 +30,7 @@ export class AuthService {
   logout(): void {
   localStorage.removeItem(environment.authTokenKey);
   this.isAuthenticatedSubject.next(false);
-  this.router.navigate(['/api/Player/login']);
+  this.router.navigate(['/login']);
   }
 
   getToken(): string | null

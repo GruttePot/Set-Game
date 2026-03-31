@@ -29,7 +29,7 @@ export class LoginComponent {
 
     this.authService.login({ userName: this.username, PasswordHash: this.password}).subscribe({
       next: () => {
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
       },
       error: (error) => {
         this.errorMessage = 'Ongeldige gegevens'
