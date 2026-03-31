@@ -12,6 +12,7 @@ import {Observable} from 'rxjs';
 
 export class HeaderComponent {
   isAuthenticated$: Observable<boolean>;
+
   constructor(private router: Router, private authService: AuthService) {
     this.isAuthenticated$ = this.authService.isAuthenticated();
   }
