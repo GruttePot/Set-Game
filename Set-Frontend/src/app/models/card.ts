@@ -9,4 +9,5 @@ export interface Card {
   shape: CardShape;
   filling: CardFilling;
   number: CardNumber;
+  selected?: boolean;
 }

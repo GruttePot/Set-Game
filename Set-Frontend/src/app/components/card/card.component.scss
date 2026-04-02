@@ -1,0 +1,25 @@
+.card {
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 1rem;
+  cursor: pointer;
+  background: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 200px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  &.selected {
+    border-color: #0066cc;
+    background-color: #e6f0ff;
+    box-shadow: 0 0 8px rgba(0,102,204,0.5);
+  }
+}
+
+

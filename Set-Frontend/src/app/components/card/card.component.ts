@@ -20,20 +20,33 @@ export class CardComponent implements OnInit  {
     if (!this.card) {
       this.card = {
         id: 1,
-        colour: CardColour.Purple,
+        colour: CardColour.Red,
         shape: CardShape.Oval,
-        filling: CardFilling.Striped,
-        number: CardNumber.Three,
+        filling: CardFilling.Solid,
+        number: CardNumber.One,
       };
     }
 
     this.shapeHref = `#card_${this.card.shape}`
     this.strokeValue = this.card.colour;
-    this.fillValue = this.card.filling;
+    this.fillValue = this.calculateFillValue();
     this.shapeArray = Array.from({ length: this.getShapeCount() }, (_, i) => i);
   }
 
-  getShapeCount(): number {
+  private calculateFillValue(): string {
+    switch (this.card.filling) {
+      case CardFilling.Solid:
+        return this.card.colour;
+      case CardFilling.Striped:
+        return `url(#stripes-${this.card.colour})`;
+      case CardFilling.Open:
+        return 'none';
+      default:
+        return this.card.colour;
+    }
+  }
+
+  private getShapeCount(): number {
     const numbers: { [key in CardNumber]: number } = {
       [CardNumber.One]: 1,
       [CardNumber.Two]: 2,
