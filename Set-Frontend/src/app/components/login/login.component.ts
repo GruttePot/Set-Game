@@ -1,4 +1,4 @@
-﻿import {Component} from '@angular/core';
+﻿import {Component, inject} from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { AuthService} from '../../services/auth.service';
@@ -12,12 +12,12 @@ import { AuthService} from '../../services/auth.service';
   imports: [FormsModule],
 })
 export class LoginComponent {
+  authService: AuthService = inject(AuthService);
+  router: Router = inject(Router);
+
   username: string = '';
   password: string = '';
   errorMessage: string = '';
-
-  constructor(private authService: AuthService, private router: Router) {
-  }
 
   onSubmit() {
     if (!this.username || !this.password) {
