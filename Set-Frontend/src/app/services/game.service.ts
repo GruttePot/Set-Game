@@ -23,11 +23,13 @@ export class GameService {
   public selectedCard: Card[] = [];
 
   public async startGame(Id: number): Promise<number> {
-    const game = await firstValueFrom(
-      Id > 0
-    ? this.http.get<Game>(`${environment.apiUrl}/${Id}`)
-    : this.http.post<Game>(`${environment.apiUrl}/new`, {})
-  );
+    let game: Game;
+     if (Id > 0)
+     {
+       game = await firstValueFrom(this.http.get<Game>(`${environment.apiUrl}/${Id}`))
+     } else {
+       game = await firstValueFrom(this.http.post<Game>(`${environment.apiUrl}/new`, {}));
+     }
 
     if (!game) {
       throw new Error('Failed to start game');
