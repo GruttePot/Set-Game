@@ -31,8 +31,7 @@ namespace Set_Backend.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    PasswordHash = table.Column<string>(type: "text", nullable: false),
-                    Score = table.Column<int>(type: "integer", nullable: false)
+                    PasswordHash = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -71,34 +70,6 @@ namespace Set_Backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Card",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Colour = table.Column<int>(type: "integer", nullable: false),
-                    Shape = table.Column<int>(type: "integer", nullable: false),
-                    Filling = table.Column<int>(type: "integer", nullable: false),
-                    Number = table.Column<int>(type: "integer", nullable: false),
-                    DeckId = table.Column<int>(type: "integer", nullable: true),
-                    GameId = table.Column<int>(type: "integer", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Card", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Card_Deck_DeckId",
-                        column: x => x.DeckId,
-                        principalTable: "Deck",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Card_Games_GameId",
-                        column: x => x.GameId,
-                        principalTable: "Games",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "FoundSets",
                 columns: table => new
                 {
@@ -122,16 +93,6 @@ namespace Set_Backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Card_DeckId",
-                table: "Card",
-                column: "DeckId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Card_GameId",
-                table: "Card",
-                column: "GameId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_FoundSets_GameId",
                 table: "FoundSets",
                 column: "GameId");
@@ -150,9 +111,6 @@ namespace Set_Backend.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Card");
-
             migrationBuilder.DropTable(
                 name: "FoundSets");
 

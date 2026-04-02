@@ -90,6 +90,7 @@ public class GameController : ControllerBase
     }
     
     [HttpPost("{id}/check-set")]
+    [Authorize]
     public async Task<ActionResult<GameDTO>> CheckSet(int id, [FromBody] List<int> cardIds)
     {
         var PlayerId = ParsePlayerId();
@@ -110,6 +111,7 @@ public class GameController : ControllerBase
     }
     
     [HttpGet("{id}/available-sets")]
+    [Authorize]
     public async Task<ActionResult<int>> GetAvailableSets(int id)
     {
         var playerId = ParsePlayerId();
@@ -129,7 +131,8 @@ public class GameController : ControllerBase
     }
     
     
-    [HttpPost("{id}/hint")]
+    [HttpGet("{id}/hint")]
+    [Authorize]
     public async Task<ActionResult<List<CardDTO>>> GetHint(int id)
     {
         var playerId = ParsePlayerId();

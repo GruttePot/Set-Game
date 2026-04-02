@@ -22,9 +22,15 @@ public class SetGameDbContext : DbContext
             .Property(g => g.CreatedAt)
             .IsRequired();
         
+        modelBuilder.Entity<Game>().Ignore(g => g.TableCards);
+        
         modelBuilder.Entity<FoundSet>()
             .HasOne(fs => fs.Game)
             .WithMany(g => g.FoundSets)
             .HasForeignKey(fs => fs.GameId);
+
+        modelBuilder.Entity<Card>().HasNoKey().ToView(null);
+        
+        modelBuilder.Entity<Deck>().Ignore(d => d.Cards);
     }
 }

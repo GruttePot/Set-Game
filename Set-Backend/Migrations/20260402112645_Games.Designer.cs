@@ -12,7 +12,7 @@ using Set_Backend.Data;
 namespace Set_Backend.Migrations
 {
     [DbContext(typeof(SetGameDbContext))]
-    [Migration("20260326141141_Games")]
+    [Migration("20260402112645_Games")]
     partial class Games
     {
         /// <inheritdoc />
@@ -27,22 +27,13 @@ namespace Set_Backend.Migrations
 
             modelBuilder.Entity("Set_Backend.Models.Card", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
                     b.Property<int>("Colour")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("DeckId")
                         .HasColumnType("integer");
 
                     b.Property<int>("Filling")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("GameId")
+                    b.Property<int>("Id")
                         .HasColumnType("integer");
 
                     b.Property<int>("Number")
@@ -51,13 +42,9 @@ namespace Set_Backend.Migrations
                     b.Property<int>("Shape")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
+                    b.ToTable((string)null);
 
-                    b.HasIndex("DeckId");
-
-                    b.HasIndex("GameId");
-
-                    b.ToTable("Card");
+                    b.ToView(null, (string)null);
                 });
 
             modelBuilder.Entity("Set_Backend.Models.Deck", b =>
@@ -158,23 +145,9 @@ namespace Set_Backend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("Score")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
 
                     b.ToTable("Players");
-                });
-
-            modelBuilder.Entity("Set_Backend.Models.Card", b =>
-                {
-                    b.HasOne("Set_Backend.Models.Deck", null)
-                        .WithMany("Cards")
-                        .HasForeignKey("DeckId");
-
-                    b.HasOne("Set_Backend.Models.Game", null)
-                        .WithMany("TableCards")
-                        .HasForeignKey("GameId");
                 });
 
             modelBuilder.Entity("Set_Backend.Models.FoundSet", b =>
@@ -197,7 +170,7 @@ namespace Set_Backend.Migrations
                         .IsRequired();
 
                     b.HasOne("Set_Backend.Models.Player", "Player")
-                        .WithMany("Games")
+                        .WithMany("Game")
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -207,21 +180,14 @@ namespace Set_Backend.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("Set_Backend.Models.Deck", b =>
-                {
-                    b.Navigation("Cards");
-                });
-
             modelBuilder.Entity("Set_Backend.Models.Game", b =>
                 {
                     b.Navigation("FoundSets");
-
-                    b.Navigation("TableCards");
                 });
 
             modelBuilder.Entity("Set_Backend.Models.Player", b =>
                 {
-                    b.Navigation("Games");
+                    b.Navigation("Game");
                 });
 #pragma warning restore 612, 618
         }

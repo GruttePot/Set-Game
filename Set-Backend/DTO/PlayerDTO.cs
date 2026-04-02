@@ -3,10 +3,8 @@
 public class PlayerDTO
 {
     public int Id { get; set; }
-    
+
     public string Name { get; set; }
-    
-    public int Score { get; set; }
-        
-    public List<GameDTO> Games { get; set; }
+
+    public ICollection<GameDTO>? Game { get; set; }
 }
