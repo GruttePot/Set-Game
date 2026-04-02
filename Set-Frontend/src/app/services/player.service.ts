@@ -26,7 +26,7 @@ export class PlayerService {
   }
 
   public async getGames(): Promise<Game[]> {
-    const games = await firstValueFrom(this.http.get<Game[]>(`${environment.apiUrl}/Game`))
+    const games = await firstValueFrom(this.http.get<Game[]>(`${environment.apiUrl}`))
 
     return games.sort((a: Game, b: Game)=>
       new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()).reverse();

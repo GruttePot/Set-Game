@@ -12,4 +12,5 @@ export const routes: Routes = [
   { path: 'card', component: CardComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'game-board', component: GameBoardComponent, canActivate: [AuthGuard] },
+  { path: 'game-board/:id', component: GameBoardComponent, canActivate: [AuthGuard] },
 ];
