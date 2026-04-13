@@ -15,6 +15,7 @@ export class GameService {
   public id: number = 0;
   public hints: number = 0;
   public fails: number = 0;
+  public foundSets: number = 0;
 
   public createdAt: Date = new Date();
   public finishedAt?: Date;
@@ -44,6 +45,7 @@ export class GameService {
     this.id = game.id;
     this.hints = game.hints;
     this.fails = game.fails;
+    this.foundSets = game.foundSets;
     this.createdAt = game.createdAt;
     this.finishedAt = game.finishedAt;
 
