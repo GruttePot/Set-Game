@@ -1,12 +1,13 @@
 ﻿<header class="flex flex-col">
-  <div class="flex itenms-center space-x-4">
+  <div class="flex itenms-center space-x-4 justify-between">
   <h1 class="text-xl font-bold">De Set Game</h1>
   </div>
   <nav class="w-full md:w-auto">
-    <ul class="flex justify-center space-x-6 text-lg">
-      <li><a (click)="routeTo('/home')" class="hover:underline">Home</a></li>
-      <li><a (click)="routeTo('/game-board')" class="hover:underline">New Game</a></li>
-      <li><a (click)="logout()" class="hover:underline">Logout</a></li>
-    </ul>
+    <div class="flex justify-center space-x-4 text-lg">
+      <button (click)="routeTo('/home')" class="nav-btn">Home</button>
+      <button (click)="routeTo('/game-board')" class="nav-btn">New Game</button>
+      <button (click)="logout()" class="nav-btn">Logout</button>
+    </div>
   </nav>
+
 </header>
