@@ -12,7 +12,7 @@ using Set_Backend.Data;
 namespace Set_Backend.Migrations
 {
     [DbContext(typeof(SetGameDbContext))]
-    [Migration("20260402112645_Games")]
+    [Migration("20260414093133_Games")]
     partial class Games
     {
         /// <inheritdoc />
