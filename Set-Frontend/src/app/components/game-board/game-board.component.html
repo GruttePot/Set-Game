@@ -1,21 +1,55 @@
-﻿<div class="flex justify-center mt-4">
-  <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" (click)="returnHome()">
-    Return Home
-  </button>
-</div>
+﻿<div class="game-container">
+  <!-- Header met acties -->
+  <div class="game-header">
+    <h1 class="game-title">Set Game</h1>
 
-<div class="flex flex-col items-center justify-center mt-4">
-  <h1 class="text-3xl font-bold mb-6">Game Board</h1>
-  <p class="text-lg text-gray-700 mb-4">This is where the game board will be displayed.</p>
-</div>
+    <div class="game-stats">
+      <div class="stat-item">
+        <span class="stat-label">Hints Left:</span>
+        <span class="stat-value">{{ gameService.hints }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Found Sets:</span>
+        <span class="stat-value">{{ gameService.foundSets }}</span>
+      </div>
+    </div>
+  </div>
 
-<div class="card-grid">
-<!--  @for (card of gameService.hand; track card.id) {-->
-<!--    <card-->
-<!--      [card]="card"-->
-<!--      [selected]="card.selected || false"/>-->
-<!--&lt;!&ndash;      (click)="selectCard(card)"&ndash;&gt;-->
-<!--  } @empty {-->
-    <p class="text lg">Heb geen cards meer</p>
-<!--  }-->
+  <!-- Main game board met cards -->
+  <div class="board-container">
+    <div class="card-grid">
+      @for (card of gameService.hand.slice(0,12); track card.id) {
+        <div
+          class="card-wrapper"
+          (click)="selectedCard(card)"
+          [class.selected]="card.selected || false">
+          <card
+            [card]="card"
+            [selected]="card.selected || false"/>
+        </div>
+      } @empty {
+        <p class="empty-state">No cards available</p>
+      }
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="action-buttons">
+    <button
+      class="btn btn-primary"
+      (click)="showHint()"
+      [disabled]="gameService.hints <= 0">
+      Get Hint
+    </button>
+    <button
+      class="btn btn-secondary"
+      (click)="returnHome()">
+      Quit Game
+    </button>
+    <button
+      class="btn btn-danger"
+      (click)="deleteGame()">
+      Delete Game
+    </button>
+  </div>
 </div>
