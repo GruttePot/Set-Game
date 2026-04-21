@@ -12,8 +12,7 @@ public class GameController : ControllerBase
 {
     private readonly IGameService _gameService;
     private readonly ISetService _setService;
-    private readonly IDeckService _deckService;
-
+    
     private int ParsePlayerId()
     {
         var playerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -24,7 +23,6 @@ public class GameController : ControllerBase
     {
         _gameService = gameService;
         _setService = setService;
-        _deckService = deckService;
     }
 
     [HttpGet]
