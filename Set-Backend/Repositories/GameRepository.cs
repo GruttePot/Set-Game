@@ -51,4 +51,14 @@ public class GameRepository : IGameRepository
         await _context.SaveChangesAsync();
         return foundSet;
     }
+    
+    public async Task<IEnumerable<Card>> GetAllCardsAsync()
+    {
+        return await _context.Cards.ToListAsync();
+    }
+
+    public async Task<Card?> GetCardByIdAsync(int id)
+    {
+        return await _context.Cards.FindAsync(id);
+    }
 }

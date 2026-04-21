@@ -36,7 +36,7 @@ public class GameService : IGameService
 
     public async Task<GameDTO> CreateGameAsync(int id)
     {
-        var gameCards = GenerateGameCards();
+        var gameCards = (await _gameRepository.GetAllCardsAsync()).ToList();
         
         var shuffledDeck = await _deckService.ShuffleDeckAsync(gameCards);
 
@@ -72,34 +72,34 @@ public class GameService : IGameService
         return true;
     }
     
-    public List<Card> GenerateGameCards()
-    {
-        var cards = new List<Card>();
-        var id = 1;
-        
-        foreach (var colour in Enum.GetValues<CardColour>())
-        {
-            foreach (var shape in Enum.GetValues<CardShape>())
-            {
-                foreach (var filling in Enum.GetValues<CardFilling>())
-                {
-                    foreach (var number in Enum.GetValues<CardNumber>())
-                    {
-                        cards.Add(new Card
-                        {
-                            Id = id++,
-                            Colour = colour,
-                            Shape = shape,
-                            Filling = filling,
-                            Number = number
-                        });
-                    }
-                }
-            }
-        }
-    
-        return cards;
-    }
+    // public List<Card> GenerateGameCards()
+    // {
+    //     var cards = new List<Card>();
+    //     var id = 1;
+    //     
+    //     foreach (var colour in Enum.GetValues<CardColour>())
+    //     {
+    //         foreach (var shape in Enum.GetValues<CardShape>())
+    //         {
+    //             foreach (var filling in Enum.GetValues<CardFilling>())
+    //             {
+    //                 foreach (var number in Enum.GetValues<CardNumber>())
+    //                 {
+    //                     cards.Add(new Card
+    //                     {
+    //                         Id = id++,
+    //                         Colour = colour,
+    //                         Shape = shape,
+    //                         Filling = filling,
+    //                         Number = number
+    //                     });
+    //                 }
+    //             }
+    //         }
+    //     }
+    //
+    //     return cards;
+    // }
 
     public async Task<GameDTO> ProcessFoundSetAsync(int id, List<int> cardIds)
     {

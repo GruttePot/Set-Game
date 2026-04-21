@@ -9,6 +9,6 @@ public interface IGameService
     Task<GameDTO?> GetGameByIdAsync(int id);
     Task<GameDTO> CreateGameAsync(int id);
     Task<bool> DeleteGameAsync(int id);
-    List<Card> GenerateGameCards();
+   // List<Card> GenerateGameCards();
     Task<GameDTO> ProcessFoundSetAsync(int id, List<int> cardIds);
 }

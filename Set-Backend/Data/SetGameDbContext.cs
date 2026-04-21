@@ -9,6 +9,7 @@ public class SetGameDbContext : DbContext
     
     public DbSet<Player> Players { get; set; }
     public DbSet<Game> Games { get; set; }
+    public DbSet<Card> Cards { get; set; }
     public DbSet<FoundSet > FoundSets { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -26,6 +27,36 @@ public class SetGameDbContext : DbContext
             .HasOne(fs => fs.Game)
             .WithMany(g => g.FoundSets)
             .HasForeignKey(fs => fs.GameId);
-        
+
+        var cards = GenerateAllCards();
+        modelBuilder.Entity<Card>().HasData(cards);
+    }
+    private static List<Card> GenerateAllCards()
+    {
+        var cards = new List<Card>();
+        var id = 1;
+    
+        foreach (var colour in Enum.GetValues<CardColour>())
+        {
+            foreach (var shape in Enum.GetValues<CardShape>())
+            {
+                foreach (var filling in Enum.GetValues<CardFilling>())
+                {
+                    foreach (var number in Enum.GetValues<CardNumber>())
+                    {
+                        cards.Add(new Card
+                        {
+                            Id = id++,
+                            Colour = colour,
+                            Shape = shape,
+                            Filling = filling,
+                            Number = number
+                        });
+                    }
+                }
+            }
+        }
+    
+        return cards;
     }
 }

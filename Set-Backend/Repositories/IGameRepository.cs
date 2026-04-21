@@ -10,4 +10,6 @@ public interface IGameRepository
     Task<Game> UpdateGameAsync(Game game);
     Task DeleteGameAsync(Game game);
     Task<FoundSet> SaveFoundSetAsync(FoundSet foundSet);
+    Task<IEnumerable<Card>> GetAllCardsAsync();
+    Task<Card?> GetCardByIdAsync(int id);
 }
