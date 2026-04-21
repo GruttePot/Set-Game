@@ -49,7 +49,7 @@ export class GameService {
     this.createdAt = game.createdAt;
     this.finishedAt = game.finishedAt;
 
-    this.hand = game.deck.cards;
+    this.hand = game.deck;
 
   }
 

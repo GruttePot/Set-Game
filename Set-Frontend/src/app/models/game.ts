@@ -8,14 +8,10 @@ export type Game = {
   fails: number;
   createdAt: Date;
   finishedAt?: Date;
-  deck: Deck;
+  deck: Card[];
+  tableCards: Card[];
   foundSets: number;
   status: GameStatus;
-}
-
-export type Deck = {
-  id: number;
-  cards: Card[];
 }
 
 export type Hints = Card[];
