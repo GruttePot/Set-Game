@@ -38,20 +38,22 @@ public class GameService : IGameService
     {
         var gameCards = GenerateGameCards();
         
-        var deck = new Deck { Cards = gameCards };
+        var shuffledDeck = await _deckService.ShuffleDeckAsync(gameCards);
 
-        var shuffleDeck = await _deckService.ShuffleDeckAsync(deck);
+        var tableCards = shuffledDeck.TakeLast(12).ToList();
 
+        var deckCards = shuffledDeck.SkipLast(12).ToList();
+        
         var game = new Game
         {
             PlayerId = id,
             CreatedAt = DateTime.UtcNow,
             Status = GameStatus.Active,
-            Deck = shuffleDeck,
+            Deck = deckCards,
             Hints = 0,
             Fails = 0,
             FoundSets = new List<FoundSet>(),
-            TableCards = shuffleDeck.Cards.TakeLast(12).ToList()
+            TableCards = tableCards
         };
             
          var createdGame =  await _gameRepository.CreateGameAsync(game);
@@ -120,7 +122,7 @@ public class GameService : IGameService
             game.TableCards.Remove(card);
         }
 
-        while (game.TableCards.Count < 12 && game.Deck.Cards.Count > 0)
+        while (game.TableCards.Count < 12 && game.Deck.Count > 0)
         {
             var setsAvailable = _setService.FindAllSets(game.TableCards);
 

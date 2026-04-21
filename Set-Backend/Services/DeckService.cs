@@ -12,25 +12,25 @@ public class DeckService : IDeckService
             _setService = setService;
         }
        
-       public async Task<Deck> ShuffleDeckAsync(Deck deck)
+       public async Task<List<Card>> ShuffleDeckAsync(List<Card> cards)
        {
-           deck.Cards = deck.Cards.OrderBy(_ => _random.Next()).ToList();
-           return await Task.FromResult(deck);
+           var shuffled = cards.OrderBy(_ => _random.Next()).ToList();
+           return await Task.FromResult(shuffled);
        }
 
-       public async Task<Card> DealCardAsync(Deck deck)
+       public async Task<Card> DealCardAsync(List<Card> deck)
        {
-           if (deck.Cards.Count == 0)
+           if (deck.Count == 0)
            {
                throw new InvalidOperationException("No Card left");
            }
         
-           var card = deck.Cards[0];
-           deck.Cards.RemoveAt(0);
+           var card = deck[0];
+           deck.RemoveAt(0);
            return await Task.FromResult(card);
        }
        
-       public async Task<Card> DrawCardIfNotSetAsync(Deck deck, List<Card> cards)
+       public async Task<Card> DrawCardIfNotSetAsync(List<Card> deck, List<Card> cards)
        {
            var sets = _setService.FindAllSets(cards);
 

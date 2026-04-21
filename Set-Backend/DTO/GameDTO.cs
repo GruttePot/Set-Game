@@ -18,7 +18,7 @@ public class GameDTO
     
     public DateTime? FinishedAt { get; set; }
     
-    public DeckDTO Deck { get; set; }
+    public List<CardDTO> Deck { get; set; } = new List<CardDTO>();
     
     public PlayerDTO? Player { get; set; }
 

@@ -5,7 +5,7 @@ namespace Set_Backend.Services;
 
 public interface IDeckService
 {
-    Task<Deck> ShuffleDeckAsync(Deck deck);
-    Task<Card> DealCardAsync(Deck deck);
-    Task<Card> DrawCardIfNotSetAsync(Deck deck, List<Card> cards);
+    Task<List<Card>> ShuffleDeckAsync(List<Card> cards);
+    Task<Card> DealCardAsync(List<Card> cards);
+    Task<Card> DrawCardIfNotSetAsync(List<Card> deck, List<Card> cards);
 }

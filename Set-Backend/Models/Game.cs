@@ -18,6 +18,8 @@ public class Game
     public int Fails { get; set; }
     
     public required GameStatus Status { get; set; }
+
+    public List<Card> Deck { get; set; } = new List<Card>();
     
     public List<FoundSet> FoundSets { get; set; } = new List<FoundSet>();
     
@@ -27,7 +29,5 @@ public class Game
     
     public DateTime? FinishedAt { get; set; }
     
-    public Player Player { get; set; } = null!;
-
-    public Deck Deck { get; set; } = null!;
+    
 }

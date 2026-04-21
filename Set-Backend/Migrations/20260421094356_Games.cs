@@ -13,18 +13,6 @@ namespace Set_Backend.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Deck",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Deck", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
@@ -49,24 +37,45 @@ namespace Set_Backend.Migrations
                     Fails = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    FinishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    DeckId = table.Column<int>(type: "integer", nullable: false)
+                    FinishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Games", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Games_Deck_DeckId",
-                        column: x => x.DeckId,
-                        principalTable: "Deck",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Games_Players_PlayerId",
                         column: x => x.PlayerId,
                         principalTable: "Players",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Card",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Colour = table.Column<int>(type: "integer", nullable: false),
+                    Shape = table.Column<int>(type: "integer", nullable: false),
+                    Filling = table.Column<int>(type: "integer", nullable: false),
+                    Number = table.Column<int>(type: "integer", nullable: false),
+                    GameId = table.Column<int>(type: "integer", nullable: true),
+                    GameId1 = table.Column<int>(type: "integer", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Card", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Card_Games_GameId",
+                        column: x => x.GameId,
+                        principalTable: "Games",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Card_Games_GameId1",
+                        column: x => x.GameId1,
+                        principalTable: "Games",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -93,14 +102,19 @@ namespace Set_Backend.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_FoundSets_GameId",
-                table: "FoundSets",
+                name: "IX_Card_GameId",
+                table: "Card",
                 column: "GameId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Games_DeckId",
-                table: "Games",
-                column: "DeckId");
+                name: "IX_Card_GameId1",
+                table: "Card",
+                column: "GameId1");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FoundSets_GameId",
+                table: "FoundSets",
+                column: "GameId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Games_PlayerId",
@@ -112,13 +126,13 @@ namespace Set_Backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Card");
+
+            migrationBuilder.DropTable(
                 name: "FoundSets");
 
             migrationBuilder.DropTable(
                 name: "Games");
-
-            migrationBuilder.DropTable(
-                name: "Deck");
 
             migrationBuilder.DropTable(
                 name: "Players");
