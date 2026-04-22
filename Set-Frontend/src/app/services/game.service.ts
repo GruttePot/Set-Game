@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { firstValueFrom} from 'rxjs';
 
@@ -12,15 +12,15 @@ import { environment} from '../../environments/environment';
 export class GameService {
   private http: HttpClient = inject(HttpClient);
 
-  public id: number = 0;
-  public hints: number = 0;
-  public fails: number = 0;
-  public foundSets: number = 0;
+  public id = signal<number>(0);
+  public hints = signal<number>(0);
+  public fails= signal<number>(0);
+  public foundSets = signal<number>(0);
 
-  public createdAt: Date = new Date();
-  public finishedAt?: Date;
+  public createdAt = signal<Date>(new Date());
+  public finishedAt = signal<Date | undefined>(undefined);
 
-  public hand: Card[] = [];
+  public hand = signal<Card[]>([]);
   public selectedCard: Card[] = [];
 
   public async startGame(Id: number): Promise<number> {
@@ -42,14 +42,14 @@ export class GameService {
 
   // Deze functie wordt gebruikt om de game bij te werken, tijdens het spelen.
   private updateGame(game: Game): void {
-    this.id = game.id;
-    this.hints = game.hints;
-    this.fails = game.fails;
-    this.foundSets = game.foundSets;
-    this.createdAt = game.createdAt;
-    this.finishedAt = game.finishedAt;
+    this.id.set(game.id);
+    this.hints.set(game.hints);
+    this.fails.set(game.fails);
+    this.foundSets.set(game.foundSets);
+    this.createdAt.set(game.createdAt);
+    this.finishedAt.set(game.finishedAt);
 
-    this.hand = game.deck;
+    this.hand.set(game.deck);
 
   }
 
@@ -59,14 +59,14 @@ export class GameService {
     }
     await firstValueFrom(this.http.delete<Game>(`${environment.apiUrl}/${this.id}`));
 
-    this.id = 0;
+    this.id.set(0);
   }
 
   public async showHint(): Promise<Hints> {
     const hint = await firstValueFrom(this.http.get<Hints>(`${environment.apiUrl}/${this.id}/hint/`));
 
     if (hint) {
-      this.hints--;
+      this.hints.set(this.hints() - 1)
     }
     return hint;
   }
@@ -88,7 +88,7 @@ export class GameService {
   public async selectCard(card: Card) {
 
     // Controller of een kaart in de hand zit
-    if (!this.hand.includes(card)) {
+    if (!this.hand().includes(card)) {
       return;
     }
 

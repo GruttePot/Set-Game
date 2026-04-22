@@ -6,11 +6,11 @@
     <div class="game-stats">
       <div class="stat-item">
         <span class="stat-label">Hints Left:</span>
-        <span class="stat-value">{{ gameService.hints }}</span>
+        <span class="stat-value">{{ gameService.hints() }}</span>
       </div>
       <div class="stat-item">
         <span class="stat-label">Found Sets:</span>
-        <span class="stat-value">{{ gameService.foundSets }}</span>
+        <span class="stat-value">{{ gameService.foundSets() }}</span>
       </div>
     </div>
   </div>
@@ -18,7 +18,7 @@
   <!-- Main game board met cards -->
   <div class="board-container">
     <div class="card-grid">
-      @for (card of gameService.hand.slice(0,12); track card.id) {
+      @for (card of gameService.hand().slice(0,12); track card.id) {
         <div
           class="card-wrapper"
           (click)="selectedCard(card)"
@@ -38,7 +38,7 @@
     <button
       class="btn btn-primary"
       (click)="showHint()"
-      [disabled]="gameService.hints <= 0">
+      [disabled]="gameService.hints() <= 0">
       Get Hint
     </button>
     <button
@@ -53,3 +53,5 @@
     </button>
   </div>
 </div>
+
+
