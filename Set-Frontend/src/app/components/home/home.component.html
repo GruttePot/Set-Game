@@ -11,7 +11,7 @@
   </div>
 
   <div class="games-section">
-    @if (games && games.length > 0) {
+    @if (games()) {
       <div class="games-header">
         <h3>Your Games</h3>
       </div>
@@ -26,7 +26,7 @@
           </tr>
           </thead>
           <tbody>
-            @for (game of games; track game.id) {
+            @for (game of games(); track game.id) {
               <tr (click)="gotoGame(game.id)">
                 <td>{{game.id}}</td>
                 <td>{{game.createdAt | date:'short'}}</td>

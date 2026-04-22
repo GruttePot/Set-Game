@@ -1,4 +1,4 @@
-﻿import {Component, inject, OnInit} from '@angular/core';
+﻿import {Component, inject, signal} from '@angular/core';
 import {Router} from '@angular/router';
 import {DatePipe } from '@angular/common';
 import {PlayerService } from '../../services/player.service';
@@ -11,21 +11,19 @@ import {Game } from '../../models/game';
   imports: [DatePipe],
   standalone: true
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   playerService: PlayerService = inject(PlayerService);
   router: Router = inject(Router);
-  games: Game[] | undefined;
+  games = signal<Game[]>([]);
 
-  async ngOnInit() {
-    await this.getGames();
-  }
+  constructor() { this.getGames(); }
 
   routeTo(target: string): void {
     this.router.navigate([target]);
   }
 
   async getGames() {
-    this.games = await this.playerService.getGames();
+    this.games.set(await this.playerService.getGames());
   }
 
   gotoGame(game: number) {
