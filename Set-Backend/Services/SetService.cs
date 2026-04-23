@@ -67,8 +67,8 @@ public class SetService : ISetService
         }
         
         var selectedCards = game.TableCards.Where(c => cards.Contains(c.Id)).ToList();
-        
-        if (cards.Count != 3)
+
+        if (selectedCards.Count != 3)
         {
             return await Task.FromResult(false);
         }
