@@ -50,7 +50,7 @@ public class GameService : IGameService
             CreatedAt = DateTime.UtcNow,
             Status = GameStatus.Active,
             Deck = deckCards,
-            Hints = 0,
+            Hints = 3,
             Fails = 0,
             FoundSets = new List<FoundSet>(),
             TableCards = tableCards

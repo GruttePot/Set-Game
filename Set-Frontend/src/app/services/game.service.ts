@@ -48,7 +48,7 @@ export class GameService {
     this.foundSets.set(game.foundSets);
     this.createdAt.set(game.createdAt);
     this.finishedAt.set(game.finishedAt);
-    this.tableCards.set(game.deck);
+    this.tableCards.set(game.tableCards);
   }
 
   public async deleteGame() {
@@ -63,8 +63,23 @@ export class GameService {
   public async showHint(): Promise<Hints> {
     const hint = await firstValueFrom(this.http.get<Hints>(`${environment.apiUrl}/${this.id()}/hint`));
 
-    if (hint) {
-      this.hints.set(this.hints() - 1)
+    if (hint && hint.length > 0) {
+      this.hints.set(this.hints() - 1);
+
+      this.tableCards.update(cards => {
+        const updated = cards.map(card => {
+          const isHinted = hint.some(h => h.id === card.id);
+          console.log(`Card ${card.id}: hinted=${isHinted}`);
+          return {
+            ...card,
+            hinted: isHinted
+          };
+        });
+        console.log('Updated tableCards with hinted property:', updated);
+        return updated;
+      });
+    } else {
+      console.log('No hint received or hint is empty');
     }
     return hint;
   }

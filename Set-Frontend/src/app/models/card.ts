@@ -10,4 +10,5 @@ export interface Card {
   filling: CardFilling;
   number: CardNumber;
   selected?: boolean;
+  hinted?: boolean;
 }

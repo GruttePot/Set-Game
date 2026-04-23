@@ -22,7 +22,8 @@
         <div
           class="card-wrapper"
           (click)="selectedCard(card)"
-          [class.selected]="card.selected || false">
+          [class.selected]="card.selected || false"
+          [class.hinted]="card.hinted || false">
           <card
             [card]="card"
             [selected]="card.selected || false"/>

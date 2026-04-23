@@ -15,12 +15,17 @@ public class GameRepository : IGameRepository
     
     public async Task<IEnumerable<Game>> GetAllGamesAsync()
     {
-        return await _context.Games.ToListAsync();
+        return await _context.Games
+            .Include(g => g.TableCards)
+            .Include(g => g.Deck)
+            .ToListAsync();
     }
     
     public async Task<Game?> GetGameByIdAsync(int id)
     {
         return await _context.Games
+            .Include(g => g.TableCards)
+            .Include(g => g.Deck)
             .Where(g => g.Id == id)
             .FirstOrDefaultAsync();
     }

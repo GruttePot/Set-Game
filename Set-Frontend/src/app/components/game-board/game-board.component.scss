@@ -83,6 +83,12 @@
   }
 }
 
+.card-wrapper.hinted {
+  border: 3px solid gold;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 1);
+  background: rgba(255, 215, 0, 0.1);
+}
+
 .action-buttons {
   display: flex;
   justify-content: center;
