@@ -20,7 +20,7 @@ export class GameService {
   public createdAt = signal<Date>(new Date());
   public finishedAt = signal<Date | undefined>(undefined);
 
-  public hand = signal<Card[]>([]);
+  public tableCards = signal<Card[]>([]);
   public selectedCard: Card[] = [];
 
   public async startGame(Id: number): Promise<number> {
@@ -48,9 +48,7 @@ export class GameService {
     this.foundSets.set(game.foundSets);
     this.createdAt.set(game.createdAt);
     this.finishedAt.set(game.finishedAt);
-
-    this.hand.set(game.deck);
-
+    this.tableCards.set(game.deck);
   }
 
   public async deleteGame() {
@@ -88,7 +86,7 @@ export class GameService {
   public async selectCard(card: Card) {
 
     // Controller of een kaart in de hand zit
-    if (!this.hand().includes(card)) {
+    if (!this.tableCards().includes(card)) {
       return;
     }
 
