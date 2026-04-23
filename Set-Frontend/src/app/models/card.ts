@@ -1,7 +1,7 @@
-﻿export enum CardColour { Red = 'red', Green = 'green', Purple = 'purple' }
-export enum CardShape { Diamond = 'diamond', Squiggle = 'squiggle', Oval = 'oval' }
-export enum CardFilling { Solid = 'solid', Striped = 'striped', Open = 'open' }
-export enum CardNumber { One = 'one', Two = 'two', Three = 'three' }
+﻿export enum CardColour { Red = 'Red', Green = 'Green', Purple = 'Purple' }
+export enum CardShape { Diamond = 'Diamond', Squiggle = 'Squiggle', Oval = 'Oval' }
+export enum CardFilling { Solid = 'Solid', Striped = 'Striped', Open = 'Open' }
+export enum CardNumber { One = 'One', Two = 'Two', Three = 'Three' }
 
 export interface Card {
   id: number;
