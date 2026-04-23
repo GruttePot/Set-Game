@@ -57,13 +57,13 @@ export class GameService {
     if(!this.id) {
       throw new Error('No game to delete');
     }
-    await firstValueFrom(this.http.delete<Game>(`${environment.apiUrl}/${this.id}`));
+    await firstValueFrom(this.http.delete<Game>(`${environment.apiUrl}/${this.id()}`));
 
     this.id.set(0);
   }
 
   public async showHint(): Promise<Hints> {
-    const hint = await firstValueFrom(this.http.get<Hints>(`${environment.apiUrl}/${this.id}/hint/`));
+    const hint = await firstValueFrom(this.http.get<Hints>(`${environment.apiUrl}/${this.id()}/hint/`));
 
     if (hint) {
       this.hints.set(this.hints() - 1)
@@ -72,7 +72,7 @@ export class GameService {
   }
 
   public async checkSet(cardIds: number[]): Promise<boolean> {
-  const foundSet = await firstValueFrom(this.http.post<FoundSet>(`${environment.apiUrl}/${this.id}/check-set`, cardIds));
+  const foundSet = await firstValueFrom(this.http.post<FoundSet>(`${environment.apiUrl}/${this.id()}/check-set`, cardIds));
 
   this.updateGame(foundSet.game);
 
@@ -80,7 +80,7 @@ export class GameService {
   }
 
   public async getAvailableSets() {
-    const sets = await firstValueFrom(this.http.get<number>(`${environment.apiUrl}/${this.id}/available-sets`));
+    const sets = await firstValueFrom(this.http.get<number>(`${environment.apiUrl}/${this.id()}/available-sets`));
 
     return sets;
   }
