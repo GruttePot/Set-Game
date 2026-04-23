@@ -61,7 +61,7 @@ export class GameService {
   }
 
   public async showHint(): Promise<Hints> {
-    const hint = await firstValueFrom(this.http.get<Hints>(`${environment.apiUrl}/${this.id()}/hint/`));
+    const hint = await firstValueFrom(this.http.get<Hints>(`${environment.apiUrl}/${this.id()}/hint`));
 
     if (hint) {
       this.hints.set(this.hints() - 1)
