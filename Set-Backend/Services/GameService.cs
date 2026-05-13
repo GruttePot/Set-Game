@@ -72,35 +72,6 @@ public class GameService : IGameService
         return true;
     }
     
-    // public List<Card> GenerateGameCards()
-    // {
-    //     var cards = new List<Card>();
-    //     var id = 1;
-    //     
-    //     foreach (var colour in Enum.GetValues<CardColour>())
-    //     {
-    //         foreach (var shape in Enum.GetValues<CardShape>())
-    //         {
-    //             foreach (var filling in Enum.GetValues<CardFilling>())
-    //             {
-    //                 foreach (var number in Enum.GetValues<CardNumber>())
-    //                 {
-    //                     cards.Add(new Card
-    //                     {
-    //                         Id = id++,
-    //                         Colour = colour,
-    //                         Shape = shape,
-    //                         Filling = filling,
-    //                         Number = number
-    //                     });
-    //                 }
-    //             }
-    //         }
-    //     }
-    //
-    //     return cards;
-    // }
-
     public async Task<GameDTO> ProcessFoundSetAsync(int id, List<int> cardIds)
     {
         var valid = await _setService.ValidateSetAsync(id, cardIds);
@@ -121,25 +92,15 @@ public class GameService : IGameService
         {
             game.TableCards.Remove(card);
         }
-
+        
         while (game.TableCards.Count < 12 && game.Deck.Count > 0)
         {
-            var setsAvailable = _setService.FindAllSets(game.TableCards);
-
-            if (setsAvailable.Count > 0)
-                break;
-
-            try
-            {
-                var newCard = await _deckService.DrawCardIfNotSetAsync(game.Deck, game.TableCards);
-                game.TableCards.Add(newCard);
-            }
-            catch (InvalidOperationException)
-            {
-                break;
-            }
+            var newCard = await _deckService.DealCardAsync(game.Deck);
+            game.TableCards.Add(newCard);
         }
         await _gameRepository.UpdateGameAsync(game);
-        return _mapper.Map<GameDTO>(game);
+        
+        var updatedGame = await _gameRepository.GetGameByIdAsync(id);
+        return _mapper.Map<GameDTO>(updatedGame);
     }
 }

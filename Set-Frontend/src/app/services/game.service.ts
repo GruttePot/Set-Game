@@ -88,11 +88,13 @@ export class GameService {
   }
 
   public async checkSet(cardIds: number[]): Promise<boolean> {
-  const foundSet = await firstValueFrom(this.http.post<FoundSet>(`${environment.apiUrl}/${this.id()}/check-set`, cardIds));
+    const game = await firstValueFrom(this.http.post<Game>(`${environment.apiUrl}/${this.id()}/check-set`, cardIds));
 
-  this.updateGame(foundSet.game);
-
-  return foundSet.isSet;
+    if (game) {
+      this.updateGame(game);
+      return true;
+    }
+    return false;
   }
 
   public async getAvailableSets() {
