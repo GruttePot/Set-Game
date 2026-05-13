@@ -33,30 +33,56 @@ public class SetService : ISetService
         return distinctCount == 1 || distinctCount == 3;
     }
     
-    public List<Card[]> FindAllSets(List<Card> tableCards)
+   public List<Card[]> FindAllSets(List<Card> tableCards)
+{
+    var validSets = new List<Card[]>();
+    var cardCount = tableCards.Count;
+    
+    Action<List<Card>, int> backtrack = null;
+    backtrack = (currentSet, startIndex) =>
     {
-        var validSets = new List<Card[]>();
-        var cardCount = tableCards.Count;
-
-        for (int i = 0; i < cardCount - 2; i++)
+        
+        if (currentSet.Count == 3)
         {
-            for (int j = i + 1; j < cardCount - 1; j++)
+            var card1DTO = _mapper.Map<CardDTO>(currentSet[0]);
+            var card2DTO = _mapper.Map<CardDTO>(currentSet[1]);
+            var card3DTO = _mapper.Map<CardDTO>(currentSet[2]);
+            
+            if (IsValidSet(card1DTO, card2DTO, card3DTO))
             {
-                for (int k = j + 1; k < cardCount; k++)
+                validSets.Add(new[] { currentSet[0], currentSet[1], currentSet[2] });
+            }
+            return;
+        }
+        
+   
+        for (int i = startIndex; i < cardCount; i++)
+        {
+         
+            if (currentSet.Count == 2)
+            {
+                var card1DTO = _mapper.Map<CardDTO>(currentSet[0]);
+                var card2DTO = _mapper.Map<CardDTO>(currentSet[1]);
+                var card3DTO = _mapper.Map<CardDTO>(tableCards[i]);
+                
+                // Skip deze kaart als het geen geldige set kan vormen
+                if (!IsValidSet(card1DTO, card2DTO, card3DTO))
                 {
-                    var card1DTO = _mapper.Map<CardDTO>(tableCards[i]);
-                    var card2DTO = _mapper.Map<CardDTO>(tableCards[j]);
-                    var card3DTO = _mapper.Map<CardDTO>(tableCards[k]);
-                    
-                    if (IsValidSet(card1DTO, card2DTO, card3DTO))
-                    {
-                        validSets.Add(new[] { tableCards[i], tableCards[j], tableCards[k] });
-                    }
+                    continue;
                 }
             }
+         
+            currentSet.Add(tableCards[i]);
+            
+            backtrack(currentSet, i + 1);
+            
+            currentSet.RemoveAt(currentSet.Count - 1);
         }
-        return validSets;
-    }
+    };
+    backtrack(new List<Card>(), 0);
+    
+    return validSets;
+}
     
     public async Task<bool> ValidateSetAsync(int id, List<int> cards)
     {
