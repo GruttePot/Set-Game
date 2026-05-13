@@ -21,6 +21,7 @@ export class GameService {
   public finishedAt = signal<Date | undefined>(undefined);
 
   public tableCards = signal<Card[]>([]);
+  public deck = signal<number>(81);
   public selectedCard: Card[] = [];
 
   public async startGame(Id: number): Promise<number> {
@@ -41,6 +42,7 @@ export class GameService {
   }
 
   // Deze functie wordt gebruikt om de game bij te werken, tijdens het spelen.
+  // /update endpoint toepassen voor persistence?
   private updateGame(game: Game): void {
     this.id.set(game.id);
     this.hints.set(game.hints);
@@ -49,6 +51,7 @@ export class GameService {
     this.createdAt.set(game.createdAt);
     this.finishedAt.set(game.finishedAt);
     this.tableCards.set(game.tableCards);
+    this.deck.set(game.deck.length);
   }
 
   public async deleteGame() {

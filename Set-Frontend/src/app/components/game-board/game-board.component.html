@@ -5,6 +5,14 @@
 
     <div class="game-stats">
       <div class="stat-item">
+        <span class="stat-label">Tablecards:</span>
+        <span class="stat-value">{{ gameService.tableCards().length }}</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Cards left:</span>
+        <span class="stat-value">{{ gameService.deck() }}</span>
+      </div>
+      <div class="stat-item">
         <span class="stat-label">Hints Left:</span>
         <span class="stat-value">{{ gameService.hints() }}</span>
       </div>
