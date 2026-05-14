@@ -1,6 +1,7 @@
 ﻿import {Component, inject, OnInit} from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Card } from '../../models/card';
+import { GameStatus } from '../../models/game';
 import { CardComponent} from '../card/card.component';
 import { GameService} from '../../services/game.service';
 
@@ -29,6 +30,10 @@ export class GameBoardComponent implements OnInit {
   async selectedCard(card: Card) {
     await this.gameService.selectCard(card);
     card.selected = !card.selected;
+
+    if (this.gameService.status() === GameStatus.Finished) {
+      this.router.navigate(['/game-over']);
+    }
   }
 
   deleteGame(){
@@ -38,6 +43,10 @@ export class GameBoardComponent implements OnInit {
 
   async showHint() {
     await this.gameService.showHint();
+
+    if (this.gameService.status() === GameStatus.Finished) {
+      this.router.navigate(['/game-over']);
+    }
   }
 
   returnHome() {

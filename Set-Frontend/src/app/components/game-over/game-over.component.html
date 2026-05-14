@@ -1,0 +1,21 @@
+﻿<!-- game-over.component.html -->
+<div class="game-over-container">
+  <div class="game-over-card">
+    <h1 class="game-over-title">Game Over!</h1>
+
+    <div class="game-stats-final">
+      <div class="stat">
+        <span class="stat-label">Sets Gevonden:</span>
+        <span class="stat-value">{{ gameService.foundSets() }}</span>
+      </div>
+      <div class="stat">
+        <span class="stat-label">Hints Gebruikt:</span>
+        <span class="stat-value">{{ 3 - gameService.hints() }}</span>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" (click)="returnHome()">
+      Terug naar Home
+    </button>
+  </div>
+</div>

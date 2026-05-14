@@ -3,7 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import { firstValueFrom} from 'rxjs';
 
 import { Card } from '../models/card';
-import { Game, Hints, FoundSet } from '../models/game';
+import {Game, GameStatus, Hints,} from '../models/game';
 
 import { environment} from '../../environments/environment';
 
@@ -17,6 +17,7 @@ export class GameService {
   public fails= signal<number>(0);
   public foundSets = signal<number>(0);
 
+  public status = signal<GameStatus>(GameStatus.Active);
   public createdAt = signal<Date>(new Date());
   public finishedAt = signal<Date | undefined>(undefined);
 
@@ -42,13 +43,13 @@ export class GameService {
   }
 
   // Deze functie wordt gebruikt om de game bij te werken, tijdens het spelen.
-  // /update endpoint toepassen voor persistence?
   private updateGame(game: Game): void {
     this.id.set(game.id);
     this.hints.set(game.hints);
     this.fails.set(game.fails);
     this.foundSets.set(game.foundSets);
     this.createdAt.set(game.createdAt);
+    this.status.set(game.status);
     this.finishedAt.set(game.finishedAt);
     this.tableCards.set(game.tableCards);
     this.deck.set(game.deck.length);
@@ -92,7 +93,7 @@ export class GameService {
 
     if (game) {
       this.updateGame(game);
-      return true;
+      return game.status !== GameStatus.Finished;
     }
     return false;
   }
