@@ -71,6 +71,25 @@ public class GameService : IGameService
         await _gameRepository.DeleteGameAsync(game);
         return true;
     }
+
+    public async Task<bool> IsGameOverAsync(int id)
+    {
+        var game = await _gameRepository.GetGameByIdAsync(id);
+        if (game == null || game.Status == GameStatus.Finished)
+            return true;
+        
+        var availableSets = await _setService.FindAvailableSetsAsync(id);
+        
+        if (game.Deck.Count < 12 && availableSets == 0)
+        {
+            game.Status = GameStatus.Finished;
+            game.FinishedAt = DateTime.UtcNow;
+            await _gameRepository.UpdateGameAsync(game);
+            return true;
+        }
+        
+        return false;
+    }
     
     public async Task<GameDTO> ProcessFoundSetAsync(int id, List<int> cardIds)
     {
@@ -100,7 +119,10 @@ public class GameService : IGameService
         }
         await _gameRepository.UpdateGameAsync(game);
         
+        await IsGameOverAsync(id);
+        
         var updatedGame = await _gameRepository.GetGameByIdAsync(id);
         return _mapper.Map<GameDTO>(updatedGame);
     }
+    
 }

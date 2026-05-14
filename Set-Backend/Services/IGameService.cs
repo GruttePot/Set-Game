@@ -8,8 +8,7 @@ public interface IGameService
     Task<IEnumerable<GameDTO>> GetAllGamesAsync();
     Task<GameDTO?> GetGameByIdAsync(int id);
     Task<GameDTO> CreateGameAsync(int id);
-    // Task<GameDTO> UpdateGameAsync(int id);
     Task<bool> DeleteGameAsync(int id);
-    // Task<bool> IsGameOverAsync(int id); // met boolean
+    Task<bool> IsGameOverAsync(int id); 
     Task<GameDTO> ProcessFoundSetAsync(int id, List<int> cardIds);
 }
