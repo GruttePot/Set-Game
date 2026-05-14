@@ -80,7 +80,7 @@ public class GameService : IGameService
         
         var availableSets = await _setService.FindAvailableSetsAsync(id);
         
-        if (game.Deck.Count < 12 && availableSets == 0)
+        if (game.Deck.Count == 0 && availableSets == 0)
         {
             game.Status = GameStatus.Finished;
             game.FinishedAt = DateTime.UtcNow;
