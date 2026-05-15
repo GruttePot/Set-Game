@@ -13,11 +13,12 @@ public class GameRepository : IGameRepository
         _context = context;
     }
     
-    public async Task<IEnumerable<Game>> GetAllGamesAsync()
+    public async Task<IEnumerable<Game>> GetAllGamesAsync(int id)
     {
         return await _context.Games
             .Include(g => g.TableCards)
             .Include(g => g.Deck)
+            .Where(g => g.Id == id)
             .ToListAsync();
     }
     

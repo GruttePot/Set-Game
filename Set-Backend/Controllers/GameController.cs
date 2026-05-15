@@ -35,7 +35,7 @@ public class GameController : ControllerBase
             return BadRequest();
         }
         
-        var games = await _gameService.GetAllGamesAsync();
+        var games = await _gameService.GetAllGamesAsync(playerId);
         return Ok(games);
     }
 
