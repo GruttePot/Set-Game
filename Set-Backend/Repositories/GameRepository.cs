@@ -18,7 +18,7 @@ public class GameRepository : IGameRepository
         return await _context.Games
             .Include(g => g.TableCards)
             .Include(g => g.Deck)
-            .Where(g => g.Id == id)
+            .Where(g => g.PlayerId == id)
             .ToListAsync();
     }
     
