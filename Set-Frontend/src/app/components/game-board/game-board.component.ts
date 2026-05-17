@@ -34,11 +34,6 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  deleteGame(){
-    this.gameService.deleteGame();
-    this.returnHome();
-  }
-
   async showHint() {
     await this.gameService.showHint();
 

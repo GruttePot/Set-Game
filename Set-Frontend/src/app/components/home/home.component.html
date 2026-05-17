@@ -23,6 +23,7 @@
             <th>Started</th>
             <th>Finished</th>
             <th>Status</th>
+            <th>Actions</th>
           </tr>
           </thead>
           <tbody>
@@ -32,6 +33,14 @@
                 <td>{{game.createdAt | date:'short'}}</td>
                 <td>{{game.finishedAt ? (game.finishedAt | date:'short') : 'In progress'}}</td>
                 <td>{{game.status}}</td>
+                <td class="action-cell">
+                  <button
+                    class="btn-danger"
+                    (click)="$event.stopPropagation(); deleteGame()"
+                    title="Delete">
+                    Delete
+                  </button>
+                </td>
               </tr>
             }
           </tbody>

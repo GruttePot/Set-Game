@@ -29,6 +29,13 @@ export class HomeComponent {
     this.games.set(await this.playerService.getGames());
   }
 
+  deleteGame(){
+    if (confirm('Do you want to delete this game?')) {
+      this.gameService.deleteGame();
+      this.getGames();
+    }
+  }
+
   gotoGame(game: number) {
     this.router.navigate(['/game-board', game]);
   }

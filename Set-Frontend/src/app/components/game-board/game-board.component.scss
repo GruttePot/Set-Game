@@ -137,15 +137,6 @@
   }
 }
 
-.btn-danger {
-  background-color: #dc3545;
-  color: white;
-
-  &:hover:not(:disabled) {
-    background-color: #c82333;
-  }
-}
-
 .empty-state {
   text-align: center;
   color: #999;
