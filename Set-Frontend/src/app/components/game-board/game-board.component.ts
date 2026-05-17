@@ -18,13 +18,11 @@ export class GameBoardComponent implements OnInit {
   router: Router = inject(Router);
   route: ActivatedRoute = inject(ActivatedRoute);
 
-
   ngOnInit() {
-    this.startNewGame();
-  }
-
-  async startNewGame() {
-    const game = await this.gameService.startGame(0)
+    const gameId = this.route.snapshot.paramMap.get('id');
+    if (gameId) {
+      this.gameService.startGame(parseInt(gameId));
+    }
   }
 
   async selectedCard(card: Card) {
