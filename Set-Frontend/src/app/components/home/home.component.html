@@ -36,7 +36,7 @@
                 <td class="action-cell">
                   <button
                     class="btn-danger"
-                    (click)="$event.stopPropagation(); deleteGame()"
+                    (click)="$event.stopPropagation(); deleteGame(game.id)"
                     title="Delete">
                     Delete
                   </button>

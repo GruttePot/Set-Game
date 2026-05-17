@@ -55,12 +55,11 @@ export class GameService {
     this.deck.set(game.deck.length);
   }
 
-  public async deleteGame() {
+  public async deleteGame(id: number) {
     if(!this.id) {
       throw new Error('No game to delete');
     }
-    await firstValueFrom(this.http.delete<Game>(`${environment.apiUrl}/${this.id()}`));
-
+    await firstValueFrom(this.http.delete<Game>(`${environment.apiUrl}/${id}`));
     this.id.set(0);
   }
 

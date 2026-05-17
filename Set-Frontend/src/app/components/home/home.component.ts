@@ -29,9 +29,9 @@ export class HomeComponent {
     this.games.set(await this.playerService.getGames());
   }
 
-  deleteGame(){
+  async deleteGame(gameId: number){
     if (confirm('Do you want to delete this game?')) {
-      this.gameService.deleteGame();
+      this.gameService.deleteGame(gameId);
       this.getGames();
     }
   }
