@@ -112,11 +112,23 @@ public class GameService : IGameService
             game.TableCards.Remove(card);
         }
         
+        // Deck bijvullen met eerste 12 cards
         while (game.TableCards.Count < 12 && game.Deck.Count > 0)
         {
             var newCard = await _deckService.DealCardAsync(game.Deck);
             game.TableCards.Add(newCard);
         }
+        // Controlleer als een set bestaat, zo niet blijf een card toevoegen tot er wel 1 is
+        while (game.Deck.Count > 0 && _setService.FindAllSets(game.TableCards).Count == 0)
+        {
+            int cardsToAdd = Math.Min(3, game.Deck.Count);
+            for (int i = 0; i < cardsToAdd; i++)
+            {
+                var newCard = await _deckService.DealCardAsync(game.Deck);
+                game.TableCards.Add(newCard);
+            }
+        }
+        
         await _gameRepository.UpdateGameAsync(game);
         
         await IsGameOverAsync(id);
