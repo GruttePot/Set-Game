@@ -25,8 +25,8 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  async selectedCard(card: Card) {
-    await this.gameService.selectCard(card);
+  selectedCard(card: Card) {
+    this.gameService.selectCard(card);
     card.selected = !card.selected;
 
     if (this.gameService.status() === GameStatus.Finished) {
@@ -34,8 +34,8 @@ export class GameBoardComponent implements OnInit {
     }
   }
 
-  async showHint() {
-    await this.gameService.showHint();
+  showHint() {
+    this.gameService.showHint();
 
     if (this.gameService.status() === GameStatus.Finished) {
       this.router.navigate(['/game-over']);
