@@ -1,34 +1,26 @@
-import { inject, Injectable } from "@angular/core";
+import {inject, Injectable, signal} from "@angular/core";
 import { HttpClient} from '@angular/common/http';
 
 import { AuthService } from "./auth.service";
-import { Credentials } from '../models/credentials';
 import { Game } from '../models/game';
 
 import { environment} from '../../environments/environment';
-import { firstValueFrom } from 'rxjs';
-
 
 @Injectable({ providedIn: "root" })
 export class PlayerService {
   private http: HttpClient = inject(HttpClient);
   private authService: AuthService = inject(AuthService);
+  public games = signal<Game[]>([]);
 
-  // public async getPlayerInfo() {
-  //   const token = this.authService.getToken();
-  //   if (!token) {
-  //     throw new Error("No authentication token found");
-  //   }
-  // }
-
-  public async playerLogin(credentials: Credentials): Promise<void> {
-    await firstValueFrom(this.authService.login(credentials));
-  }
-
-  public async getGames(): Promise<Game[]> {
-    const games = await firstValueFrom(this.http.get<Game[]>(`${environment.apiUrl}`))
-
-    return games.sort((a: Game, b: Game)=>
-      new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()).reverse();
+  public getGames(): void {
+    this.http.get<Game[]>(`${environment.apiUrl}`).subscribe({
+      next: (games) => {
+        const sortedGames = games.sort((a: Game, b: Game) =>
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        this.games.set(sortedGames);
+      },
+      error: (error) => console.error('Failed to get games', error)
+    });
   }
 }

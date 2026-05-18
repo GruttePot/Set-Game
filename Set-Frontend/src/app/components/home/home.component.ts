@@ -16,28 +16,30 @@ export class HomeComponent {
   playerService: PlayerService = inject(PlayerService);
   gameService: GameService = inject(GameService);
   router: Router = inject(Router);
-  games = signal<Game[]>([]);
+
+  games = this.playerService.games;
 
   constructor() { this.getGames(); }
 
-  async startNewGame(id: number) {
-    const game = await this.gameService.startGame(id);
-    this.router.navigate(['/game-board', game]);
+  startNewGame(id: number) {
+    this.gameService.startGame(id);
+    setTimeout(() => {
+      this.router.navigate(['/game-board', this.gameService.id()]);
+    }, 100);
   }
 
-  async getGames() {
-    this.games.set(await this.playerService.getGames());
+  getGames() {
+    this.playerService.getGames();
   }
 
-  async deleteGame(gameId: number){
+  deleteGame(gameId: number) {
     if (confirm('Do you want to delete this game?')) {
       this.gameService.deleteGame(gameId);
-      this.getGames();
+      setTimeout(() => this.getGames(), 100);
     }
   }
 
   gotoGame(game: number) {
     this.router.navigate(['/game-board', game]);
   }
-
 }

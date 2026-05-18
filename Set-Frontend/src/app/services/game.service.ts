@@ -1,12 +1,10 @@
 import { inject, Injectable, signal } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import { firstValueFrom} from 'rxjs';
 
 import { Card } from '../models/card';
 import {Game, GameStatus, Hints,} from '../models/game';
 
 import { environment} from '../../environments/environment';
-
 
 @Injectable({ providedIn: 'root' })
 export class GameService {
@@ -25,21 +23,18 @@ export class GameService {
   public deck = signal<number>(81);
   public selectedCard: Card[] = [];
 
-  public async startGame(Id: number): Promise<number> {
-    let game: Game;
-     if (Id > 0)
-     {
-       game = await firstValueFrom(this.http.get<Game>(`${environment.apiUrl}/${Id}`))
-     } else {
-       game = await firstValueFrom(this.http.post<Game>(`${environment.apiUrl}/new`, {}));
-     }
-
-    if (!game) {
-      throw new Error('Failed to start game');
+  public startGame(Id: number): void {
+    if (Id > 0) {
+      this.http.get<Game>(`${environment.apiUrl}/${Id}`).subscribe({
+        next: (game) => this.updateGame(game),
+        error: (error) => console.error('Failed to start game', error)
+      });
+    } else {
+      this.http.post<Game>(`${environment.apiUrl}/new`, {}).subscribe({
+        next: (game) => this.updateGame(game),
+        error: (error) => console.error('Failed to start game', error)
+      });
     }
-
-    this.updateGame(game);
-    return game.id;
   }
 
   // Deze functie wordt gebruikt om de game bij te werken, tijdens het spelen.
@@ -55,52 +50,50 @@ export class GameService {
     this.deck.set(game.deck.length);
   }
 
-  public async deleteGame(id: number) {
+  public deleteGame(id: number): void {
     if(!this.id) {
       throw new Error('No game to delete');
     }
-    await firstValueFrom(this.http.delete<Game>(`${environment.apiUrl}/${id}`));
-    this.id.set(0);
+    this.http.delete<Game>(`${environment.apiUrl}/${id}`).subscribe({
+      next: () => this.id.set(0),
+      error: (error) => console.error('Failed to delete game', error)
+    });
   }
 
-  public async showHint(): Promise<Hints> {
-    const hint = await firstValueFrom(this.http.get<Hints>(`${environment.apiUrl}/${this.id()}/hint`));
-
-    if (hint && hint.length > 0) {
-      this.hints.set(this.hints() - 1);
-
-      this.tableCards.update(cards => {
-        const updated = cards.map(card => {
-          const isHinted = hint.some(h => h.id === card.id);
-          console.log(`Card ${card.id}: hinted=${isHinted}`);
-          return {
-            ...card,
-            hinted: isHinted
-          };
-        });
-        console.log('Updated tableCards with hinted property:', updated);
-        return updated;
-      });
-    } else {
-      console.log('No hint received or hint is empty');
-    }
-    return hint;
+  public showHint(): void {
+    this.http.get<Hints>(`${environment.apiUrl}/${this.id()}/hint`).subscribe({
+      next: (hint) => {
+        if (hint && hint.length > 0) {
+          this.hints.set(this.hints() - 1);
+          this.tableCards.update(cards => {
+            const updated = cards.map(card => {
+              const isHinted = hint.some(h => h.id === card.id);
+              return {
+                ...card,
+                hinted: isHinted
+              };
+            });
+            return updated;
+          });
+        } else {
+        }
+      },
+      error: (error) => console.error('Failed to get hint', error)
+    });
   }
 
-  public async checkSet(cardIds: number[]): Promise<boolean> {
-    const game = await firstValueFrom(this.http.post<Game>(`${environment.apiUrl}/${this.id()}/check-set`, cardIds));
-
-    if (game) {
-      this.updateGame(game);
-      return game.status !== GameStatus.Finished;
-    }
-    return false;
+  public checkSet(cardIds: number[]): void {
+    this.http.post<Game>(`${environment.apiUrl}/${this.id()}/check-set`, cardIds).subscribe({
+      next: (game) => this.updateGame(game),
+      error: (error) => console.error('Failed to check set', error)
+    });
   }
 
-  public async getAvailableSets() {
-    const sets = await firstValueFrom(this.http.get<number>(`${environment.apiUrl}/${this.id()}/available-sets`));
-
-    return sets;
+  public getAvailableSets(): void {
+    this.http.get<number>(`${environment.apiUrl}/${this.id()}/available-sets`).subscribe({
+      next: (sets) => console.log('Available sets:', sets),
+      error: (error) => console.error('Failed to get available sets', error)
+    });
   }
 
   public async selectCard(card: Card) {
