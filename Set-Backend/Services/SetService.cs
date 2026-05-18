@@ -121,11 +121,15 @@ public class SetService : ISetService
     public async Task<List<CardDTO>> GetHintAsync(int id)
     {
         var game = await _gameRepository.GetGameByIdAsync(id);
-        if (game == null)
+        if (game == null || game.Hints <= 0)
         {
             return new List<CardDTO>();
         }
        
+        game.Hints--;
+        
+        await _gameRepository.UpdateGameAsync(game);
+        
         var sets = FindAllSets(game.TableCards);
         
         if (sets.Count > 0)
