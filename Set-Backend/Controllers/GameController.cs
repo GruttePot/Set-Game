@@ -108,27 +108,6 @@ public class GameController : ControllerBase
         }
     }
     
-    [HttpGet("{id}/available-sets")]
-    [Authorize]
-    public async Task<ActionResult<int>> GetAvailableSets(int id)
-    {
-        var playerId = ParsePlayerId();
-        if (playerId == null)
-        {
-            return BadRequest();
-        }
-        
-        var availableSets = await _setService.FindAvailableSetsAsync(id);
-    
-        if (availableSets == null)
-        {
-            return NotFound();
-        }
-
-        return availableSets;
-    }
-    
-    
     [HttpGet("{id}/hint")]
     [Authorize]
     public async Task<ActionResult<List<CardDTO>>> GetHint(int id)
