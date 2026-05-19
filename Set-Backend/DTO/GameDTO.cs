@@ -24,6 +24,8 @@ public class GameDTO
 
     public List<CardDTO> TableCards{ get; set; }
     
+    public int AvailableSets { get; set; }
+    
     public List<FoundSetDTO> FoundSets { get; set; } = new();
 
 }
