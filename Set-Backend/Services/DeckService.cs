@@ -29,18 +29,6 @@ public class DeckService : IDeckService
            deck.RemoveAt(0);
            return await Task.FromResult(card);
        }
-       
-       public async Task<Card> DrawCardIfNotSetAsync(List<Card> deck, List<Card> cards)
-       {
-           var sets = _setService.FindAllSets(cards);
-
-           if (sets.Count == 0)
-           {
-               return await DealCardAsync(deck);
-           }
-        
-           throw new InvalidOperationException("Valid set, cannot draw card");
-       }
 } 
 
 

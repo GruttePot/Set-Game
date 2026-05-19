@@ -7,5 +7,4 @@ public interface IDeckService
 {
     Task<List<Card>> ShuffleDeckAsync(List<Card> cards);
     Task<Card> DealCardAsync(List<Card> cards);
-    Task<Card> DrawCardIfNotSetAsync(List<Card> deck, List<Card> cards);
 }
