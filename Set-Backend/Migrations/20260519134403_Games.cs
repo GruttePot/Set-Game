@@ -38,6 +38,7 @@ namespace Set_Backend.Migrations
                     Hints = table.Column<int>(type: "integer", nullable: false),
                     Fails = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
+                    AvailableSets = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     FinishedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
