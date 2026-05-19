@@ -50,8 +50,9 @@ public class GameService : IGameService
             CreatedAt = DateTime.UtcNow,
             Status = GameStatus.Active,
             Deck = deckCards,
-            Hints = 3,
+            Hints = 10,
             Fails = 0,
+            AvailableSets = _setService.FindAllSets(tableCards).Count,
             FoundSets = new List<FoundSet>(),
             TableCards = tableCards
         };
@@ -134,7 +135,7 @@ public class GameService : IGameService
         await IsGameOverAsync(id);
         
         var updatedGame = await _gameRepository.GetGameByIdAsync(id);
+        updatedGame.AvailableSets = _setService.FindAllSets(updatedGame.TableCards).Count;
         return _mapper.Map<GameDTO>(updatedGame);
     }
-    
 }

@@ -13,6 +13,7 @@ export class GameService {
   public id = signal<number>(0);
   public hints = signal<number>(0);
   public fails= signal<number>(0);
+  public availableSets = signal<number>(0);
   public foundSets = signal<number>(0);
 
   public status = signal<GameStatus>(GameStatus.Active);
@@ -42,6 +43,7 @@ export class GameService {
     this.id.set(game.id);
     this.hints.set(game.hints);
     this.fails.set(game.fails);
+    this.availableSets.set(game.availableSets);
     this.foundSets.set(game.foundSets);
     this.createdAt.set(game.createdAt);
     this.status.set(game.status);
@@ -86,13 +88,6 @@ export class GameService {
     this.http.post<Game>(`${environment.apiUrl}/${this.id()}/check-set`, cardIds).subscribe({
       next: (game) => this.updateGame(game),
       error: (error) => console.error('Failed to check set', error)
-    });
-  }
-
-  public availableSets(): void {
-    this.http.get<number>(`${environment.apiUrl}/${this.id()}/available-sets`).subscribe({
-      next: (sets) => console.log('Available sets:', sets),
-      error: (error) => console.error('Failed to get available sets', error)
     });
   }
 
