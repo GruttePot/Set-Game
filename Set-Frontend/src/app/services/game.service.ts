@@ -89,7 +89,7 @@ export class GameService {
     });
   }
 
-  public getAvailableSets(): void {
+  public availableSets(): void {
     this.http.get<number>(`${environment.apiUrl}/${this.id()}/available-sets`).subscribe({
       next: (sets) => console.log('Available sets:', sets),
       error: (error) => console.error('Failed to get available sets', error)
