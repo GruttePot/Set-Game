@@ -10,15 +10,11 @@ export type Game = {
   finishedAt?: Date;
   deck: Card[];
   tableCards: Card[];
+  availableSets: number;
   foundSets: number;
   status: GameStatus;
 }
 
 export type Hints = Card[];
 
-export type FoundSet = {
-  id: number;
-  isSet: boolean;
-  game: Game;
-}
 
