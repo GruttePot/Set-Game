@@ -86,8 +86,14 @@ export class GameService {
 
   public checkSet(cardIds: number[]): void {
     this.http.post<Game>(`${environment.apiUrl}/${this.id()}/check-set`, cardIds).subscribe({
-      next: (game) => this.updateGame(game),
-      error: (error) => console.error('Failed to check set', error)
+      next: (game) => {
+        this.updateGame(game);
+        this.clearSelection();
+      },
+      error: (error) => {
+        console.error('Failed to check set', error);
+        this.clearSelection();
+      }
     });
   }
 
@@ -113,10 +119,16 @@ export class GameService {
     // Controlleer voor een Set als 3 kaarten geselecteerd zijn
     if (this.selectedCard.length === 3) {
       const cards = this.selectedCard.map(c => c.id);
-      const isSet = await this.checkSet(cards);
+      this.checkSet(cards);
 
       // Clear selectie na validatie, ongeacht of het een Set is
       this.selectedCard = [];
     }
   }
+  private clearSelection(): void {
+    this.selectedCard = [];
+    this.tableCards.update(cards =>
+      cards.map(card => ({ ...card, selected: false }))
+    )};
+
 }
