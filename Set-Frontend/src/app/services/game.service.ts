@@ -64,25 +64,17 @@ export class GameService {
 
   public showHint(): void {
     this.http.get<Hints>(`${environment.apiUrl}/${this.id()}/hint`).subscribe({
-      next: (hint) => {
-        if (hint && hint.length > 0) {
-          this.hints.set(this.hints() - 1);
-          this.tableCards.update(cards => {
-            const updated = cards.map(card => {
-              const isHinted = hint.some(h => h.id === card.id);
-              return {
-                ...card,
-                hinted: isHinted
-              };
-            });
-            return updated;
-          });
-        } else {
-        }
-      },
+      next: (hint) => this.applyHint(hint),
       error: (error) => console.error('Failed to get hint', error)
     });
   }
+
+  private applyHint(hint: Hints): void {
+    if (!hint || hint.length === 0) return;
+    this.hints.set(this.hints() - 1);
+    this.tableCards.update(cards =>
+      cards.map(card => ({ ...card, hinted: hint.some(h => h.id === card.id) }))
+    )};
 
   public checkSet(cardIds: number[]): void {
     this.http.post<Game>(`${environment.apiUrl}/${this.id()}/check-set`, cardIds).subscribe({
