@@ -30,8 +30,10 @@ public class GameService : IGameService
     public async Task<GameDTO?> GetGameByIdAsync(int id)
     {
         var game = await _gameRepository.GetGameByIdAsync(id);
-        return _mapper.Map<GameDTO>(game);
-
+        if (game == null) return null;
+        var gameDTO = _mapper.Map<GameDTO>(game);
+        gameDTO.AvailableSets = _setService.FindAllSets(game.TableCards).Count;
+        return gameDTO;
     }
 
     public async Task<GameDTO> CreateGameAsync(int id)
@@ -52,13 +54,14 @@ public class GameService : IGameService
             Deck = deckCards,
             Hints = 10,
             Fails = 0,
-            AvailableSets = _setService.FindAllSets(tableCards).Count,
             FoundSets = new List<FoundSet>(),
             TableCards = tableCards
         };
             
-         var createdGame =  await _gameRepository.CreateGameAsync(game);
-         return _mapper.Map<GameDTO>(createdGame);
+        var createdGame = await _gameRepository.CreateGameAsync(game);
+        var gameDTO = _mapper.Map<GameDTO>(createdGame);
+        gameDTO.AvailableSets = _setService.FindAllSets(createdGame.TableCards).Count;
+        return gameDTO;
     }
     
     public async Task<bool> DeleteGameAsync(int id)
@@ -135,7 +138,8 @@ public class GameService : IGameService
         await IsGameOverAsync(id);
         
         var updatedGame = await _gameRepository.GetGameByIdAsync(id);
-        updatedGame.AvailableSets = _setService.FindAllSets(updatedGame.TableCards).Count;
-        return _mapper.Map<GameDTO>(updatedGame);
+        var gameDTO = _mapper.Map<GameDTO>(updatedGame);
+        gameDTO.AvailableSets = _setService.FindAllSets(updatedGame.TableCards).Count;
+        return gameDTO;
     }
 }

@@ -12,7 +12,7 @@ using Set_Backend.Data;
 namespace Set_Backend.Migrations
 {
     [DbContext(typeof(SetGameDbContext))]
-    [Migration("20260519134403_Games")]
+    [Migration("20260520074717_Games")]
     partial class Games
     {
         /// <inheritdoc />
@@ -747,9 +747,6 @@ namespace Set_Backend.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AvailableSets")
-                        .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");

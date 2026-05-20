@@ -21,8 +21,6 @@ public class Game
 
     public List<Card> Deck { get; set; } = new List<Card>();
     
-    public int AvailableSets { get; set; }
-    
     public List<FoundSet> FoundSets { get; set; } = new List<FoundSet>();
     
     public List<Card> TableCards { get; set; } =  new List<Card>();
