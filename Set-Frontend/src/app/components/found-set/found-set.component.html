@@ -1,10 +1,6 @@
-﻿<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+﻿<div class="set">
+  <card [card]="foundSet.card1" [selected]="false"/>
+  <card [card]="foundSet.card2" [selected]="false"/>
+  <card [card]="foundSet.card3" [selected]="false"/>
+  <span class="set-time">{{ foundSet.foundAt | date:'shortTime' }}</span>
+</div>
