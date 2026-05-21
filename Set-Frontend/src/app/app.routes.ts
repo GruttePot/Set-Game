@@ -10,7 +10,6 @@ import {GameOverComponent} from './components/game-over/game-over.component';
 export const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'card', component: CardComponent },
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'game-board', component: GameBoardComponent, canActivate: [AuthGuard] },
   { path: 'game-board/:id', component: GameBoardComponent, canActivate: [AuthGuard] },

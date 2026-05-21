@@ -3,7 +3,6 @@ import {Router} from '@angular/router';
 import {DatePipe } from '@angular/common';
 import {PlayerService } from '../../services/player.service';
 import {GameService} from '../../services/game.service';
-import {Game } from '../../models/game';
 
 @Component({
   selector: 'home',

@@ -6,7 +6,7 @@ import {Card, CardColour, CardFilling, CardNumber, CardShape} from '../../models
   templateUrl: 'card.component.html',
   styleUrls: ['card.component.scss']
 })
-export class CardComponent implements OnInit  {
+export class CardComponent {
   @Input() card!: Card;
   @Input() selected: boolean = false;
 
@@ -16,17 +16,6 @@ export class CardComponent implements OnInit  {
   shapeArray: number[] = [];
 
   ngOnInit() {
-    // Test card voor het inladen
-    if (!this.card) {
-      this.card = {
-        id: 1,
-        colour: CardColour.Red,
-        shape: CardShape.Oval,
-        filling: CardFilling.Solid,
-        number: CardNumber.One,
-      };
-    }
-
     this.shapeHref = `#card_${this.card.shape}`
     this.strokeValue = this.card.colour;
     this.fillValue = this.calculateFillValue();
