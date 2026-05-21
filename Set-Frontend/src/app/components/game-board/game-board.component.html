@@ -24,6 +24,7 @@
   </div>
 
   <!-- Main game board met cards -->
+  <div class="game-layout">
   <div class="board-container">
     <div class="card-grid">
       @for (card of gameService.tableCards().slice(0,12); track card.id) {
@@ -50,7 +51,7 @@
       <p class="empty-state">No sets found yet</p>
     }
   </div>
-
+  </div>
 
   <!-- Action buttons -->
   <div class="action-buttons">
