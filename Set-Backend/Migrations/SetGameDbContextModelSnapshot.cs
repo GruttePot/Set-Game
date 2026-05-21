@@ -732,6 +732,12 @@ namespace Set_Backend.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Card1Id");
+
+                    b.HasIndex("Card2Id");
+
+                    b.HasIndex("Card3Id");
+
                     b.HasIndex("GameId");
 
                     b.ToTable("FoundSets");
@@ -805,11 +811,35 @@ namespace Set_Backend.Migrations
 
             modelBuilder.Entity("Set_Backend.Models.FoundSet", b =>
                 {
+                    b.HasOne("Set_Backend.Models.Card", "Card1")
+                        .WithMany()
+                        .HasForeignKey("Card1Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Set_Backend.Models.Card", "Card2")
+                        .WithMany()
+                        .HasForeignKey("Card2Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Set_Backend.Models.Card", "Card3")
+                        .WithMany()
+                        .HasForeignKey("Card3Id")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Set_Backend.Models.Game", "Game")
                         .WithMany("FoundSets")
                         .HasForeignKey("GameId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Card1");
+
+                    b.Navigation("Card2");
+
+                    b.Navigation("Card3");
 
                     b.Navigation("Game");
                 });

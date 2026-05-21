@@ -28,6 +28,29 @@ public class SetGameDbContext : DbContext
             .WithMany(g => g.FoundSets)
             .HasForeignKey(fs => fs.GameId);
 
+        modelBuilder.Entity<FoundSet>()
+            .HasOne(fs => fs.Game)
+            .WithMany(g => g.FoundSets)
+            .HasForeignKey(fs => fs.GameId);
+
+        modelBuilder.Entity<FoundSet>()
+            .HasOne(f => f.Card1)
+            .WithMany()
+            .HasForeignKey(f => f.Card1Id)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<FoundSet>()
+            .HasOne(f => f.Card2)
+            .WithMany()
+            .HasForeignKey(f => f.Card2Id)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<FoundSet>()
+            .HasOne(f => f.Card3)
+            .WithMany()
+            .HasForeignKey(f => f.Card3Id)
+            .OnDelete(DeleteBehavior.Restrict);
+        
         var cards = GenerateAllCards();
         modelBuilder.Entity<Card>().HasData(cards);
     }

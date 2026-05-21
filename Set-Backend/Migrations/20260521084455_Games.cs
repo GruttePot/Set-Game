@@ -96,6 +96,24 @@ namespace Set_Backend.Migrations
                 {
                     table.PrimaryKey("PK_FoundSets", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_FoundSets_Cards_Card1Id",
+                        column: x => x.Card1Id,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FoundSets_Cards_Card2Id",
+                        column: x => x.Card2Id,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_FoundSets_Cards_Card3Id",
+                        column: x => x.Card3Id,
+                        principalTable: "Cards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
                         name: "FK_FoundSets_Games_GameId",
                         column: x => x.GameId,
                         principalTable: "Games",
@@ -202,6 +220,21 @@ namespace Set_Backend.Migrations
                 column: "GameId1");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FoundSets_Card1Id",
+                table: "FoundSets",
+                column: "Card1Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FoundSets_Card2Id",
+                table: "FoundSets",
+                column: "Card2Id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FoundSets_Card3Id",
+                table: "FoundSets",
+                column: "Card3Id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_FoundSets_GameId",
                 table: "FoundSets",
                 column: "GameId");
@@ -216,10 +249,10 @@ namespace Set_Backend.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Cards");
+                name: "FoundSets");
 
             migrationBuilder.DropTable(
-                name: "FoundSets");
+                name: "Cards");
 
             migrationBuilder.DropTable(
                 name: "Games");
