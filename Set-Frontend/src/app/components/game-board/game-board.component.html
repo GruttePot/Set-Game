@@ -42,27 +42,15 @@
     </div>
   </div>
 
-  <!-- Board met Found sets -->
-<!--  <div class="found-sets-container">-->
-<!--    <div class="card-grid">-->
-<!--      @for (set of gameService.checkSet(); track set.id) {-->
-<!--        <div class="found-set-wrapper">-->
-<!--          <div class="found-set-cards">-->
-<!--            @for (card of set.cards; track card.id) {-->
-<!--              <card-->
-<!--                [card]="card"-->
-<!--                [selected]="false"/>-->
-<!--            }-->
-<!--          </div>-->
-<!--          <div class="found-set-info">-->
-<!--            <span class="set-score">Score: {{ found-set.score }}</span>-->
-<!--            <span class="set-time">Found at: {{ found-set.foundAt | date:'shortTime' }}</span>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      } @empty {-->
-<!--        <p class="empty-state">No sets found yet</p>-->
-<!--      }-->
-<!--    </div>-->
+  <!-- Found sets -->
+  <div class="found-sets-container">
+    @for (set of gameService.foundSets().slice().reverse(); track set.id) {
+      <found-set [foundSet]="set"/>
+    } @empty {
+      <p class="empty-state">No sets found yet</p>
+    }
+  </div>
+</div>
 
   <!-- Action buttons -->
   <div class="action-buttons">
@@ -78,6 +66,6 @@
       Quit Game
     </button>
   </div>
-</div>
+
 
 
