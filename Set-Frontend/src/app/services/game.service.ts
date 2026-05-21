@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 
 import { Card } from '../models/card';
 import {Game, GameStatus, Hints,} from '../models/game';
+import { FoundSet} from '../models/found-set';
 
 import { environment} from '../../environments/environment';
 
@@ -14,7 +15,7 @@ export class GameService {
   public hints = signal<number>(0);
   public fails= signal<number>(0);
   public availableSets = signal<number>(0);
-  public foundSets = signal<number>(0);
+  public foundSets = signal<FoundSet[]>([]);
 
   public status = signal<GameStatus>(GameStatus.Active);
   public createdAt = signal<Date>(new Date());

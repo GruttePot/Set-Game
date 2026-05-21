@@ -6,6 +6,6 @@ export type FoundSet = {
   card1: Card;
   card2: Card;
   card3: Card;
-  isSet: boolean;
   game: Game;
+  foundAt: Date;
 }

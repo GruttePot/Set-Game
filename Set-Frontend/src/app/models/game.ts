@@ -1,4 +1,5 @@
 ﻿import {Card} from './card';
+import { FoundSet } from './found-set';
 
 export enum GameStatus {Active = 'Active', Finished = 'Finished', Paused = 'Paused' }
 
@@ -11,7 +12,7 @@ export type Game = {
   deck: Card[];
   tableCards: Card[];
   availableSets: number;
-  foundSets: number;
+  foundSets: FoundSet[];
   status: GameStatus;
 }
 
