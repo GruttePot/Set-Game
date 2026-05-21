@@ -1,6 +1,8 @@
 ﻿<div class="set">
-  <card [card]="foundSet.card1" [selected]="false"/>
-  <card [card]="foundSet.card2" [selected]="false"/>
-  <card [card]="foundSet.card3" [selected]="false"/>
+  <div class="set-cards">
+    <card [card]="foundSet.card1" [selected]="false"/>
+    <card [card]="foundSet.card2" [selected]="false"/>
+    <card [card]="foundSet.card3" [selected]="false"/>
+  </div>
   <span class="set-time">{{ foundSet.foundAt | date:'shortTime' }}</span>
 </div>
