@@ -1,8 +1,8 @@
-﻿<div class="game-container">
+﻿<!-- Game Board Component -->
+<div class="game-container">
   <!-- Header met acties -->
   <div class="game-header">
     <h1 class="game-title">Set Game</h1>
-
     <div class="game-stats">
       <div class="stat-item">
         <span class="stat-label">Tablecards:</span>
@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <!-- Found sets -->
+  <!-- Found sets board -->
   <div class="found-sets-container">
     @for (set of gameService.foundSets().slice().reverse(); track set.id) {
       <found-set [foundSet]="set"/>

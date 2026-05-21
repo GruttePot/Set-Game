@@ -1,15 +1,18 @@
-﻿<div class="home-container">
+﻿<!-- Home Component -->
+<div class="home-container">
   <div class="home-header">
     <h1 class="home-title">Welkom bij De Set Game</h1>
     <p class="home-subtitle">Test je vaardigheden met het spelen van de Set Game</p>
   </div>
 
+  <!-- Button om een nieuw spel te starten -->
   <div class="action-section">
     <button (click)="startNewGame(0)" class="btn-new-game">
       Start a New Game
     </button>
   </div>
 
+  <!-- Tabel met bestaande spellen van een player-->
   <div class="games-section">
     @if (games()) {
       <div class="games-header">
