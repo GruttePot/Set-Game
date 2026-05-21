@@ -27,6 +27,12 @@ public class GameRepository : IGameRepository
         return await _context.Games
             .Include(g => g.TableCards)
             .Include(g => g.Deck)
+            .Include(g => g.FoundSets)
+            .ThenInclude(fs => fs.Card1)
+            .Include(g => g.FoundSets)
+            .ThenInclude(fs => fs.Card2)
+            .Include(g => g.FoundSets)
+            .ThenInclude(fs => fs.Card3)
             .Where(g => g.Id == id)
             .FirstOrDefaultAsync();
     }
