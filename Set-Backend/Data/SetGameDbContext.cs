@@ -29,11 +29,6 @@ public class SetGameDbContext : DbContext
             .HasForeignKey(fs => fs.GameId);
 
         modelBuilder.Entity<FoundSet>()
-            .HasOne(fs => fs.Game)
-            .WithMany(g => g.FoundSets)
-            .HasForeignKey(fs => fs.GameId);
-
-        modelBuilder.Entity<FoundSet>()
             .HasOne(f => f.Card1)
             .WithMany()
             .HasForeignKey(f => f.Card1Id)
