@@ -12,7 +12,7 @@ using Set_Backend.Data;
 namespace Set_Backend.Migrations
 {
     [DbContext(typeof(SetGameDbContext))]
-    [Migration("20260521084455_Games")]
+    [Migration("20260522091921_Games")]
     partial class Games
     {
         /// <inheritdoc />
@@ -24,6 +24,36 @@ namespace Set_Backend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("CardGame", b =>
+                {
+                    b.Property<int>("GameId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("TableCardsId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("GameId", "TableCardsId");
+
+                    b.HasIndex("TableCardsId");
+
+                    b.ToTable("GameTableCards", (string)null);
+                });
+
+            modelBuilder.Entity("CardGame1", b =>
+                {
+                    b.Property<int>("DeckId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("Game1Id")
+                        .HasColumnType("integer");
+
+                    b.HasKey("DeckId", "Game1Id");
+
+                    b.HasIndex("Game1Id");
+
+                    b.ToTable("GameDeckCards", (string)null);
+                });
 
             modelBuilder.Entity("Set_Backend.Models.Card", b =>
                 {
@@ -39,12 +69,6 @@ namespace Set_Backend.Migrations
                     b.Property<int>("Filling")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("GameId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("GameId1")
-                        .HasColumnType("integer");
-
                     b.Property<int>("Number")
                         .HasColumnType("integer");
 
@@ -52,10 +76,6 @@ namespace Set_Backend.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("GameId");
-
-                    b.HasIndex("GameId1");
 
                     b.ToTable("Cards");
 
@@ -801,15 +821,34 @@ namespace Set_Backend.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("Set_Backend.Models.Card", b =>
+            modelBuilder.Entity("CardGame", b =>
                 {
                     b.HasOne("Set_Backend.Models.Game", null)
-                        .WithMany("Deck")
-                        .HasForeignKey("GameId");
+                        .WithMany()
+                        .HasForeignKey("GameId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Set_Backend.Models.Card", null)
+                        .WithMany()
+                        .HasForeignKey("TableCardsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CardGame1", b =>
+                {
+                    b.HasOne("Set_Backend.Models.Card", null)
+                        .WithMany()
+                        .HasForeignKey("DeckId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Set_Backend.Models.Game", null)
-                        .WithMany("TableCards")
-                        .HasForeignKey("GameId1");
+                        .WithMany()
+                        .HasForeignKey("Game1Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Set_Backend.Models.FoundSet", b =>
@@ -858,11 +897,7 @@ namespace Set_Backend.Migrations
 
             modelBuilder.Entity("Set_Backend.Models.Game", b =>
                 {
-                    b.Navigation("Deck");
-
                     b.Navigation("FoundSets");
-
-                    b.Navigation("TableCards");
                 });
 
             modelBuilder.Entity("Set_Backend.Models.Player", b =>

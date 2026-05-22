@@ -23,6 +23,16 @@ public class SetGameDbContext : DbContext
             .Property(g => g.CreatedAt)
             .IsRequired();
         
+        modelBuilder.Entity<Game>()
+            .HasMany(g => g.TableCards)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("GameTableCards"));
+
+        modelBuilder.Entity<Game>()
+            .HasMany(g => g.Deck)
+            .WithMany()
+            .UsingEntity(j => j.ToTable("GameDeckCards"));
+        
         modelBuilder.Entity<FoundSet>()
             .HasOne(fs => fs.Game)
             .WithMany(g => g.FoundSets)

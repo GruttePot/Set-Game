@@ -45,11 +45,21 @@ public class GameRepository : IGameRepository
     }
 
     public async Task<Game> UpdateGameAsync(Game game)
-    {
-        _context.Entry(game).State = EntityState.Modified;
-        await _context.SaveChangesAsync();
-        return game;
-    }
+{
+    var existingGame = await _context.Games
+        .Include(g => g.TableCards)
+        .Include(g => g.Deck)
+        .FirstOrDefaultAsync(g => g.Id == game.Id);
+
+    if (existingGame == null) return game;
+
+    _context.Entry(existingGame).CurrentValues.SetValues(game);
+    existingGame.TableCards = game.TableCards;
+    existingGame.Deck = game.Deck;
+
+    await _context.SaveChangesAsync();
+    return existingGame;
+}
     
     public async Task DeleteGameAsync(Game game)
     {
